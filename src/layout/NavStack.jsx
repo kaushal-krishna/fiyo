@@ -1,12 +1,22 @@
-import React from 'react'
-import SideNav from './items/SideNav';
+import React, { useState, useEffect } from "react";
+import SideNav from "./items/SideNav";
+import BottomNav from "./items/BottomNav";
 
 const NavStack = () => {
-  return (
-    <>
-        <SideNav />
-    </>
-  )
-}
+  const [isMobile, setIsMobile] = useState(
+    window.matchMedia("(max-width: 1024px)").matches
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.matchMedia("(max-width: 1024px)").matches);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return <>{isMobile ? <BottomNav /> : <SideNav />}</>;
+};
 
 export default NavStack;

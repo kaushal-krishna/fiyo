@@ -71,7 +71,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="flex justify-center w-full mx-6">
+    <div className="flex justify-center w-full lg:mx-6">
       <div className="w-full max-w-5xl flex flex-col lg:flex-row gap-6">
         <div className="w-full lg:w-1/2 flex flex-col gap-6">
           <CustomTopNav

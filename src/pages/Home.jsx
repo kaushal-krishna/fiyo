@@ -71,9 +71,9 @@ const Home = () => {
   ];
 
   return (
-    <div className="flex justify-center w-full lg:mx-6">
-      <div className="w-full max-w-5xl flex flex-col lg:flex-row gap-6">
-        <div className="w-full lg:w-1/2 flex flex-col gap-6">
+    <div className="flex justify-center mx-auto w-full">
+      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-6 w-full py-6 gap-6">
+        <div className="flex-1 lg:w-2/3">
           <CustomTopNav
             className="block lg:hidden"
             logoImage="https://cdnfiyo.github.io/img/logos/flexiyo.png"
@@ -125,7 +125,7 @@ const Home = () => {
         </div>
 
         {/* Right Section - Suggestions (only for large screens) */}
-        <div className="hidden lg:block w-1/2">
+        <div className="hidden lg:block lg:w-1/3">
           <Suggestions />
         </div>
       </div>

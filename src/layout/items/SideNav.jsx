@@ -41,7 +41,7 @@ const SideNav = () => {
           to: "/profile",
           icon: ProfileIcon,
           label: "Profile",
-          extraProps: { avatar: "https://i.pravatar.cc/200?img=1" },
+          extraProps: { avatar: "https://cdnfiyo.github.io/img/user/profile/default-avatar.png" },
         },
       ].map(({ to, icon: Icon, label, extraProps }) => (
         <NavLink key={to} to={to} className="flex items-center gap-4">

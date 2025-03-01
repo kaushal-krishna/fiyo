@@ -8,9 +8,9 @@ const HomeIcon = ({ focused }) => (
     viewBox="0 0 24 24"
   >
     <path
-      stroke="black"
-      fill={focused && "black"}
-      className={`${focused && "dark:fill-white"} dark:stroke-white`}
+      className={`${
+        focused && "fill-black dark:fill-white"
+      } stroke-black dark:stroke-white`}
       strokeWidth={focused ? 0 : 2}
       d="M13.45 2.533a2.25 2.25 0 0 0-2.9 0L3.8 8.228a2.25 2.25 0 0 0-.8 1.72v9.305c0 .966.784 1.75 1.75 1.75h3a1.75 1.75 0 0 0 1.75-1.75V15.25c0-.68.542-1.232 1.217-1.25h2.566a1.25 1.25 0 0 1 1.217 1.25v4.003c0 .966.784 1.75 1.75 1.75h3a1.75 1.75 0 0 0 1.75-1.75V9.947a2.25 2.25 0 0 0-.8-1.72z"
     />
@@ -25,12 +25,10 @@ const SearchIcon = ({ focused }) => (
     viewBox="0 0 24 24"
   >
     <path
-      stroke="black"
-      className="dark:stroke-white"
+      className="fill-none stroke-black dark:stroke-white"
       strokeWidth={focused ? 3 : 2}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill="none"
       d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
     />
   </svg>
@@ -56,18 +54,15 @@ const MusicIcon = ({ focused, isAudioPlaying }) => {
       <g>
         <path
           d="M312.889,271.082c0-6.902,5.596-12.497,12.498-12.497c6.902,0,12.498,5.596,12.498,12.497 c0-6.902,5.596-12.497,12.498-12.497c6.903,0,12.498,5.596,12.498,12.497c0,11.95-24.997,26.245-24.997,26.245 S312.889,283.707,312.889,271.082z"
-          fill="black"
-          className="dark:fill-white"
+          className="fill-black dark:fill-white"
         />
         <path
           d="M142.222,157.305c0-6.903,5.596-12.497,12.498-12.497s12.498,5.596,12.498,12.497 c0-6.903,5.596-12.497,12.498-12.497s12.498,5.596,12.498,12.497c0,11.95-24.997,26.245-24.997,26.245 S142.222,169.929,142.222,157.305z"
-          fill="black"
-          className="dark:fill-white"
+          className="fill-black dark:fill-white"
         />
         <path
           d="M92.229,299.527c0-6.903,5.596-12.497,12.498-12.497c6.903,0,12.498,5.596,12.498,12.497 c0-6.903,5.596-12.497,12.498-12.497c6.903,0,12.498,5.596,12.498,12.497c0,11.95-24.997,26.245-24.997,26.245 S92.229,312.151,92.229,299.527z"
-          fill="black"
-          className="dark:fill-white"
+          className="fill-black dark:fill-white"
         />
       </g>
       <path
@@ -87,14 +82,12 @@ const ClipsIcon = ({ focused }) => (
   >
     {focused ? (
       <path
-        fill="black"
-        className="dark:fill-white"
+        className="fill-black dark:fill-white"
         d="M4.25 2A2.25 2.25 0 0 0 2 4.25v5.5A2.25 2.25 0 0 0 4.25 12h6.5A2.25 2.25 0 0 0 13 9.75v-5.5A2.25 2.25 0 0 0 10.75 2zM6 8.996V5.004a.5.5 0 0 1 .778-.416l2.997 1.996a.5.5 0 0 1 0 .833L6.777 9.413A.5.5 0 0 1 6 8.996M6 14a2.496 2.496 0 0 1-2-1h7.25A2.75 2.75 0 0 0 14 10.25V4c.607.456 1 1.182 1 2v4.25A3.75 3.75 0 0 1 11.25 14z"
       />
     ) : (
       <path
-        fill="black"
-        className="dark:fill-white"
+        className="fill-black dark:fill-white"
         d="m6 5.004l-.001 3.993a.5.5 0 0 0 .777.416l2.998-1.996a.5.5 0 0 0 0-.832L6.777 4.588A.5.5 0 0 0 6 5.004M2 4.25A2.25 2.25 0 0 1 4.25 2h6.5A2.25 2.25 0 0 1 13 4.25v5.5A2.25 2.25 0 0 1 10.75 12h-6.5A2.25 2.25 0 0 1 2 9.75zM4.25 3C3.56 3 3 3.56 3 4.25v5.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25v-5.5C12 3.56 11.44 3 10.75 3zM4 13c.456.607 1.182 1 2 1h5.25A3.75 3.75 0 0 0 15 10.25V6c0-.818-.393-1.544-1-2v6.25A2.75 2.75 0 0 1 11.25 13z"
       />
     )}
@@ -115,7 +108,7 @@ const CreateIcon = ({ focused, size = 30 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24">
     <path
       className={`stroke-black dark:stroke-white ${
-        focused && "stroke-white dark:stroke-black fill-black dark:fill-white"
+        focused && "fill-black dark:fill-white"
       }`}
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -136,12 +129,13 @@ const CreateIcon = ({ focused, size = 30 }) => (
   </svg>
 );
 
-const NotificationsIcon = ({ size = 30 }) => (
+const NotificationsIcon = ({ focused, size = 30 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24">
     <rect width={size} height={size} fill="none" />
     <path
-      fill="black"
-      className="dark:fill-white"
+      className={`fill-black dark:fill-white ${
+        focused && "stroke-black dark:stroke-white"
+      }`}
       d="M6,17v-.5H2.25A2.253,2.253,0,0,1,0,14.25v-.382a2.542,2.542,0,0,1,1.415-2.289A1.247,1.247,0,0,0,2.1,10.572l.446-4.91A6.227,6.227,0,0,1,10.618.286a5.477,5.477,0,0,0-.635,1.374A4.794,4.794,0,0,0,8.75,1.5,4.7,4.7,0,0,0,4.045,5.8L3.6,10.708A2.739,2.739,0,0,1,2.089,12.92a1.055,1.055,0,0,0-.589.949v.382A.751.751,0,0,0,2.25,15h13A.751.751,0,0,0,16,14.25v-.382a1.053,1.053,0,0,0-.586-.948A2.739,2.739,0,0,1,13.9,10.708l-.2-2.18a5.473,5.473,0,0,0,1.526.221l.166,1.822a1.26,1.26,0,0,0,.686,1.005,2.547,2.547,0,0,1,1.418,2.29v.382a2.252,2.252,0,0,1-2.25,2.25H11.5V17A2.75,2.75,0,0,1,6,17Zm1.5,0A1.25,1.25,0,0,0,10,17v-.5H7.5ZM15.047,6.744A3.486,3.486,0,0,1,13.5,6.28L13.456,5.8a4.7,4.7,0,0,0-1.648-3.185,3.5,3.5,0,0,1,.61-1.417A6.221,6.221,0,0,1,14.95,5.662l.1,1.081v0Z"
       transform="translate(3.25 2.25)"
     />
@@ -153,7 +147,7 @@ const NotificationsIcon = ({ size = 30 }) => (
   </svg>
 );
 
-const ChatIcon = ({ size = 30 }) => (
+const ChatIcon = ({ focused, size = 30 }) => (
   <svg
     width={size}
     height={size}
@@ -162,13 +156,22 @@ const ChatIcon = ({ size = 30 }) => (
     title="Chat with your mates"
   >
     <g
-      fill="none"
-      stroke="black"
-      className="dark:stroke-white"
+      className={` stroke-black dark:stroke-white ${
+        focused && "fill-black dark:fill-white "
+      }`}
       strokeWidth="1.5"
     >
       <path d="M20 12c0-3.771 0-5.657-1.172-6.828C17.657 4 15.771 4 12 4C8.229 4 6.343 4 5.172 5.172C4 6.343 4 8.229 4 12v6c0 .943 0 1.414.293 1.707C4.586 20 5.057 20 6 20h6c3.771 0 5.657 0 6.828-1.172C20 17.657 20 15.771 20 12z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 10h6m-6 4h3" />
+      <path
+        strokeLinecap="round"
+        className={
+          focused
+            ? "stroke-white dark:stroke-black"
+            : "stroke-black dark:stroke-white"
+        }
+        strokeLinejoin="round"
+        d="M9 10h6m-6 4h3"
+      />
     </g>
   </svg>
 );

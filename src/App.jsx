@@ -1,8 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
 import NavStack from "./layout/NavStack";
-import NotFound404 from "./pages/NotFound404";
+import { Home, Profile, NotFound404 } from "./pages";
 
 function App() {
   return (
@@ -10,6 +9,7 @@ function App() {
       <NavStack />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
     </div>

@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 const NotFound404 = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen w-full bg-body-bg dark:bg-body-bg-dark flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 xl:px-12 transition-colors duration-200">
-      <div className="w-full space-y-8 sm:space-y-10 lg:space-y-12 text-center">
+    <div className="flex items-center justify-center max-w-7xl w-full gap-6 mx-auto transition-colors duration-200">
+      <div className="flex flex-col w-full gap-8 text-center">
         {/* 404 Illustration */}
         <div className="relative flex justify-center">
           <h1 className="text-7xl sm:text-9xl lg:text-[12rem] xl:text-[14rem] font-extrabold text-gray-900 dark:text-gray-100 tracking-widest">
@@ -24,8 +24,7 @@ const NotFound404 = () => {
             Page Not Found
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base lg:text-lg xl:text-xl mx-auto sm:max-w-2xl lg:max-w-4xl">
-            Sorry, we couldn’t find the page you’re looking for. It might have
-            been removed, had its name changed, or is temporarily unavailable.
+            Sorry, we couldn’t find the page you’re looking for.
           </p>
         </div>
 
@@ -50,11 +49,6 @@ const NotFound404 = () => {
             Previous Page
           </button>
         </div>
-      </div>
-
-      {/* Footer Decoration */}
-      <div className="mt-12 sm:mt-16 lg:mt-20 xl:mt-24 text-gray-500 dark:text-gray-400 text-xs sm:text-sm lg:text-base">
-        <p>Error 404 | © {new Date().getFullYear()} Flexiyo</p>
       </div>
     </div>
   );

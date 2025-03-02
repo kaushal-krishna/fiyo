@@ -6,16 +6,13 @@ import {
   SearchIcon,
   MusicIcon,
   ClipsIcon,
-  CreateIcon,
-  NotificationsIcon,
-  ChatIcon,
   ProfileIcon,
 } from "../../icons";
 
 const BottomNav = () => {
   const { isAudioPlaying } = useContext(MusicContext);
   return (
-    <div className="fixed flex justify-around items-center w-full bottom-0 text-black dark:text-white bg-body-bg dark:bg-body-bg-dark h-14 border-t border-gray-800">
+    <div className="fixed flex justify-around items-center w-full bottom-0 text-black dark:text-white bg-body-bg dark:bg-body-bg-dark h-14 border-t border-gray-300 dark:border-gray-800">
       {[
         { to: "/", icon: HomeIcon },
         { to: "/search", icon: SearchIcon },

@@ -5,7 +5,7 @@ import { Home, Explore, Profile, NotFound404 } from "./pages";
 
 function App() {
   return (
-    <div className="flex min-h-screen bg-body-bg dark:bg-body-bg-dark">
+    <div className="flex min-h-screen bg-body-bg dark:bg-body-bg-dark pb-16 lg:pb-0">
       <NavStack />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -41,7 +41,7 @@ const Suggestions = () => {
   ];
 
   return (
-    <div className="bg-body-bg dark:bg-body-bg-dark rounded-lg p-4 sticky top-4 shadow-md">
+    <div className="bg-body-bg dark:bg-body-bg-dark rounded-lg p-4 sticky top-2">
       <h2 className="text-xl text-gray-900 dark:text-white font-bold mb-4">
         Suggestions For You
       </h2>

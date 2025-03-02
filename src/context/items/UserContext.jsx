@@ -4,13 +4,7 @@ const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    id: "65ec8b2e-0d5e-4c5b-8c2e-0d5e4c5b8c2e",
-    username: "kaushal",
-    full_name: "Kaushal Krishna",
-    avatar: "https://cdnfiyo.github.io/img/user/profile/default-avatar.png",
-    banner: "https://cdnfiyo.github.io/img/user/profile/default-banner.png",
-  });
+  const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const savedUserInfo = localStorage.getItem("userInfo");

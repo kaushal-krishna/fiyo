@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import UserContext from "../../context/items/UserContext";
 import MusicContext from "../../context/items/MusicContext";
 import {
   HomeIcon,
@@ -14,6 +15,7 @@ import {
 
 const SideNav = () => {
   const { isAudioPlaying } = useContext(MusicContext);
+  const { userInfo } = useContext(UserContext);
   return (
     <div className="flex flex-col items-center xl:items-start left-0 top-0 sticky w-20 xl:w-80 xl:pl-6  gap-8 py-4 border-r border-gray-300 dark:border-gray-800 h-screen text-black dark:text-white bg-body-bg dark:bg-body-bg-dark overflow-y-auto no-scrollbar">
       <div className="flex items-center justify-center xl:justify-start">
@@ -42,12 +44,11 @@ const SideNav = () => {
         },
         { to: "/direct/inbox", icon: ChatIcon, label: "Messages" },
         {
-          to: "/u/kaushal",
+          to: `/u/${userInfo?.username}`,
           icon: ProfileIcon,
           label: "Profile",
           extraProps: {
-            avatar:
-              "https://cdnfiyo.github.io/img/user/avatars/default-avatar.jpg",
+            avatar: userInfo?.avatar,
           },
         },
       ].map(({ to, icon: Icon, label, extraProps }) => (

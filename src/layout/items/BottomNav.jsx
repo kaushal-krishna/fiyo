@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import UserContext from "../../context/items/UserContext";
 import MusicContext from "../../context/items/MusicContext";
 import {
   HomeIcon,
@@ -10,6 +11,7 @@ import {
 } from "../../icons";
 
 const BottomNav = () => {
+  const { userInfo } = useContext(UserContext);
   const { isAudioPlaying } = useContext(MusicContext);
   return (
     <div className="fixed flex justify-around items-center w-full bottom-0 text-black dark:text-white bg-body-bg dark:bg-body-bg-dark h-14 border-t border-gray-300 dark:border-gray-800">
@@ -23,11 +25,10 @@ const BottomNav = () => {
         },
         { to: "/clips", icon: ClipsIcon, label: "Clips" },
         {
-          to: "/profile",
+          to: `/u/${userInfo?.username}`,
           icon: ProfileIcon,
           extraProps: {
-            avatar:
-              "https://cdnfiyo.github.io/img/user/avatars/default-avatar.jpg",
+            avatar: userInfo?.avatar,
           },
         },
       ].map(({ to, icon: Icon, extraProps }) => (

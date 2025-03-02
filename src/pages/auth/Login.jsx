@@ -1,0 +1,208 @@
+import { useState, useEffect, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import fiyoAxios from "../../utils/fiyoAxios.js";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import UserContext from "../../context/items/UserContext";
+import { fiyoauthApiBaseUri } from "../../constants.js";
+
+const Login = () => {
+  const { setIsUserAuthenticated, saveUserInfo } = useContext(UserContext);
+  const [alertText, setAlertText] = useState("");
+  const [isForgotPasswordClicked, setIsForgotPasswordClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const LoginSchema = Yup.object().shape({
+    username: Yup.string().required("Email or Username is required"),
+    password: Yup.string().required("Password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: LoginSchema,
+    onSubmit: (values) => {
+      handleLoginUser(values);
+    },
+  });
+
+  useEffect(() => {
+    const storedUserInfo = localStorage.getItem("userInfo");
+    if (storedUserInfo) {
+      setIsUserAuthenticated(true);
+      navigate("/", { state: { from: "/auth/login" }, replace: true });
+    }
+  }, [setIsUserAuthenticated, navigate]);
+
+  const handleLoginUser = async (values) => {
+    setIsLoading(true);
+    setAlertText("");
+    try {
+      const deviceName = navigator.userAgent.split(" ")[0] || "Unknown";
+      const response = await fiyoAxios.post(
+        `${fiyoauthApiBaseUri}/users/login`,
+        {
+          username: values.username,
+          password: values.password,
+          device_name: deviceName,
+        },
+        { withCredentials: false }
+      );
+
+      if (!response?.data?.success || !response?.data?.data) {
+        throw new Error("Invalid response structure from server");
+      }
+
+      const userData = {
+        id: response.data.data.id,
+        username: response.data.data.username,
+        avatar: response.data.data.avatar,
+        headers: {
+          fiyort: response.data.data.headers.fiyort,
+          fiyoat: response.data.data.headers.fiyoat,
+          fiyodid: response.data.data.headers.fiyodid,
+        },
+      };
+
+      console.log("Constructed userData:", userData);
+
+      setIsUserAuthenticated(true);
+      saveUserInfo(userData);
+      localStorage.setItem("userInfo", JSON.stringify(userData));
+      setIsLoading(false);
+      navigate("/", { state: { from: "/auth/login" }, replace: true });
+    } catch (error) {
+      console.error("Login Error:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      setAlertText(errorMessage);
+      setIsLoading(false);
+      setIsUserAuthenticated(false);
+    }
+  };
+
+  return (
+    <section className="min-h-screen bg-body-bg dark:bg-body-bg-dark from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl flex flex-col lg:flex-row gap-8 lg:gap-0 bg-white dark:bg-gray-800 shadow-xl lg:rounded-2xl overflow-hidden">
+        {/* Left Section - Hidden on md and below */}
+        <div className="hidden lg:flex lg:w-1/2 p-8 lg:p-12 bg-gradient-to-br from-white via-pink-200 to-blue-300 text-gray-800 flex-col justify-center items-center">
+          <img
+            src="https://cdnfiyo.github.io/img/logos/flexiyo.png"
+            alt="Flexiyo Logo"
+            className="w-24 h-24 lg:w-28 lg:h-28 rounded-full mb-6 border-4 border-gray-200 shadow-lg"
+          />
+          <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-center">
+            Welcome to Flexiyo
+          </h1>
+          <p className="mt-4 text-lg lg:text-xl opacity-90 text-center max-w-md">
+            Discover a world of connection, creativity, and joy. Sign in to
+            begin!
+          </p>
+        </div>
+
+        {/* Right Section - Form */}
+        <div className="w-full lg:w-1/2 p-8 flex flex-col justify-center bg-body-bg dark:bg-body-bg-dark lg:bg-secondary-bg dark:lg:bg-secondary-bg-dark">
+          <h2 className="text-2xl lg:text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-2 text-center">
+            Welcome Back!
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6 text-center">
+            Enter your credentials to continue
+          </p>
+
+          {alertText && (
+            <div className="mb-6 p-4 bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 rounded-xl border-l-4 border-red-500">
+              {alertText}
+            </div>
+          )}
+
+          <form onSubmit={formik.handleSubmit} className="space-y-6">
+            <div>
+              <input
+                type="text"
+                name="username"
+                placeholder="Email or Username"
+                className={`w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-2 ${
+                  formik.touched.username && formik.errors.username
+                    ? "border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                } focus:outline-none focus:border-indigo-500 transition-all rounded-lg lg:rounded-xl`}
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.username && formik.errors.username && (
+                <p className="mt-1 text-sm text-red-500">
+                  {formik.errors.username}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                className={`w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-2 ${
+                  formik.touched.password && formik.errors.password
+                    ? "border-red-500"
+                    : "border-gray-200 dark:border-gray-600"
+                } focus:outline-none focus:border-indigo-500 transition-all rounded-lg lg:rounded-xl`}
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.password && formik.errors.password && (
+                <p className="mt-1 text-sm text-red-500">
+                  {formik.errors.password}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setIsForgotPasswordClicked(true)}
+                className="text-indigo-600 dark:text-indigo-400 hover:underline text-sm cursor-pointer"
+              >
+                Forgot Password?
+              </button>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full sm:w-auto px-6 py-3 bg-indigo-600 text-white rounded-lg lg:rounded-xl hover:bg-indigo-700 disabled:bg-indigo-400 transition-all duration-200 font-medium shadow-md cursor-pointer"
+              >
+                {isLoading ? "Signing In..." : "Sign In"}
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-8 text-center text-gray-600 dark:text-gray-400">
+            <p>
+              Don't have an account?{" "}
+              <Link
+                to="/auth/signup"
+                className="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+              >
+                Sign Up
+              </Link>
+            </p>
+            <p
+              onClick={() => navigate("/music")}
+              className="mt-4 text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+            >
+              Enjoy Music Instead
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Login;

@@ -59,7 +59,7 @@ const CustomTopNav = ({
               <button
                 key={index}
                 className="cursor-pointer"
-                onClick={icon.onPress}
+                onClick={icon.onClick}
               >
                 {icon.resource}
               </button>

@@ -29,53 +29,53 @@ const Home = () => {
       caption: "A beautiful day to vibe with this amazing track!",
       uploadDate: "12 January 2025",
     },
-    {
-      id: "2",
-      profilePic: "https://i.pravatar.cc/200?img=2",
-      username: "jane.smith",
-      songTitle: "Golden Hour • JVKE",
-      postImage:
-        "https://demo.tiny.pictures/main/example1.jpg?width=500&height=250",
-      likesCount: 332,
-      commentsCount: 120,
-      sharesCount: 67,
-      caption: "Can't stop listening to this masterpiece 🌅",
-      uploadDate: "11 January 2025",
-    },
-    {
-      id: "3",
-      profilePic: "https://i.pravatar.cc/200?img=3",
-      username: "mike.breeze",
-      songTitle: "Ocean Eyes • Billie Eilish",
-      postImage:
-        "https://demo.tiny.pictures/main/example3.jpg?width=500&height=250",
-      likesCount: 450,
-      commentsCount: 210,
-      sharesCount: 80,
-      caption: "Lost in the magic of this song 🎧.",
-      uploadDate: "30 December 2024",
-    },
-    {
-      id: "4",
-      profilePic: "https://i.pravatar.cc/200?img=4",
-      username: "sarah.connor",
-      songTitle: "Blinding Lights • The Weeknd",
-      postImage:
-        "https://demo.tiny.pictures/main/example4.jpg?width=500&height=250",
-      likesCount: 789,
-      commentsCount: 300,
-      sharesCount: 120,
-      caption: "This song always hits differently ✨.",
-      uploadDate: "15 December 2024",
-    },
+    // {
+    //   id: "2",
+    //   profilePic: "https://i.pravatar.cc/200?img=2",
+    //   username: "jane.smith",
+    //   songTitle: "Golden Hour • JVKE",
+    //   postImage:
+    //     "https://demo.tiny.pictures/main/example1.jpg?width=500&height=250",
+    //   likesCount: 332,
+    //   commentsCount: 120,
+    //   sharesCount: 67,
+    //   caption: "Can't stop listening to this masterpiece 🌅",
+    //   uploadDate: "11 January 2025",
+    // },
+    // {
+    //   id: "3",
+    //   profilePic: "https://i.pravatar.cc/200?img=3",
+    //   username: "mike.breeze",
+    //   songTitle: "Ocean Eyes • Billie Eilish",
+    //   postImage:
+    //     "https://demo.tiny.pictures/main/example3.jpg?width=500&height=250",
+    //   likesCount: 450,
+    //   commentsCount: 210,
+    //   sharesCount: 80,
+    //   caption: "Lost in the magic of this song 🎧.",
+    //   uploadDate: "30 December 2024",
+    // },
+    // {
+    //   id: "4",
+    //   profilePic: "https://i.pravatar.cc/200?img=4",
+    //   username: "sarah.connor",
+    //   songTitle: "Blinding Lights • The Weeknd",
+    //   postImage:
+    //     "https://demo.tiny.pictures/main/example4.jpg?width=500&height=250",
+    //   likesCount: 789,
+    //   commentsCount: 300,
+    //   sharesCount: 120,
+    //   caption: "This song always hits differently ✨.",
+    //   uploadDate: "15 December 2024",
+    // },
   ];
 
   return (
     <div className="flex justify-center mx-auto w-full">
-      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-6 w-full py-6 gap-6">
+      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl w-full md:mx-6 gap-6">
         <div className="flex-1 lg:w-2/3">
           <CustomTopNav
-            className="block lg:hidden"
+            className="block md:hidden"
             logoImage="https://cdnfiyo.github.io/img/logos/flexiyo.png"
             rightIcons={[
               {
@@ -106,7 +106,7 @@ const Home = () => {
           </div> */}
 
           {/* Posts Section */}
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full py-6 flex flex-col items-center">
             {posts.map((post, index) => (
               <Post
                 key={index}

@@ -4,12 +4,12 @@ import BottomNav from "./items/BottomNav";
 
 const NavStack = () => {
   const [isMobile, setIsMobile] = useState(
-    window.matchMedia("(max-width: 1024px)").matches
+    window.matchMedia("(max-width: 768px)").matches
   );
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.matchMedia("(max-width: 1024px)").matches);
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
     };
 
     window.addEventListener("resize", handleResize);

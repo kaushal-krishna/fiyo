@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import MusicContext from "../../context/items/MusicContext";
 import {
   HomeIcon,
   SearchIcon,
@@ -9,17 +11,19 @@ import {
   ChatIcon,
   ProfileIcon,
 } from "../../icons";
-import { NavLink } from "react-router-dom";
 
 const SideNav = () => {
+  const { isAudioPlaying } = useContext(MusicContext);
   return (
-    <div className="flex flex-col items-center xl:items-start left-0 top-0 sticky min-w-20 xl:w-80 xl:pl-6  gap-8 p-2 border-r border-gray-800 h-screen text-black dark:text-white bg-body-bg dark:bg-body-bg-dark">
-      <img
-        src="https://cdnfiyo.github.io/img/logos/flexiyo.png"
-        className="mb-2 max-w-16 p-2 xl:hidden"
-        alt="Flexiyo"
-      />
-      <span className="p-2 mx-2 text-2xl font-bold hidden xl:block">Flexiyo</span>
+    <div className="flex flex-col items-center xl:items-start left-0 top-0 sticky min-w-20 xl:w-80 xl:pl-6  gap-8 py-4 border-r border-gray-800 h-screen text-black dark:text-white bg-body-bg dark:bg-body-bg-dark overflow-y-auto no-scrollbar">
+      <div className="flex items-center justify-center xl:justify-start">
+        <img
+          src="https://cdnfiyo.github.io/img/logos/flexiyo.png"
+          className="p-2 max-w-16"
+          alt="Flexiyo"
+        />
+        <span className="p-2 text-2xl font-bold hidden xl:block">Flexiyo</span>
+      </div>
       {[
         { to: "/", icon: HomeIcon, label: "Home" },
         { to: "/search", icon: SearchIcon, label: "Search" },
@@ -27,7 +31,7 @@ const SideNav = () => {
           to: "/music",
           icon: MusicIcon,
           label: "Music",
-          extraProps: { isAudioPlaying: true },
+          extraProps: { isAudioPlaying },
         },
         { to: "/clips", icon: ClipsIcon, label: "Clips" },
         { to: "/create", icon: CreateIcon, label: "Create" },
@@ -41,14 +45,19 @@ const SideNav = () => {
           to: "/profile",
           icon: ProfileIcon,
           label: "Profile",
-          extraProps: { avatar: "https://cdnfiyo.github.io/img/user/profile/default-avatar.png" },
+          extraProps: {
+            avatar:
+              "https://cdnfiyo.github.io/img/user/avatars/default-avatar.jpg",
+          },
         },
       ].map(({ to, icon: Icon, label, extraProps }) => (
         <NavLink key={to} to={to} className="flex items-center gap-4">
           {({ isActive }) => (
             <>
               <Icon focused={isActive} {...extraProps} />
-              <span className={`hidden xl:block ${isActive && "font-bold"}`}>{label}</span>
+              <span className={`hidden xl:block ${isActive && "font-bold"}`}>
+                {label}
+              </span>
             </>
           )}
         </NavLink>

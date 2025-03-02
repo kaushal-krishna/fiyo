@@ -14,7 +14,7 @@ const Post = ({
   const [liked, setLiked] = useState(false);
 
   return (
-    <div className="flex flex-col py-4 w-full gap-4">
+    <div className="flex flex-col w-full gap-4">
       <div className="flex items-center justify-between mx-2">
         <div className="flex gap-4">
           <img

@@ -22,3 +22,14 @@
   --color-primary-text: #000000;
   --color-primary-text-dark: #ffffff;
 }
+
+/* Hide scrollbar for Chrome, Safari, and Edge */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE/Edge */
+}

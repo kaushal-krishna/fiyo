@@ -90,8 +90,8 @@ const Search = () => {
 
   return (
     <div className="flex justify-center mx-auto w-full">
-      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-6 w-full py-6 gap-6">
-        <div className="flex-1 lg:w-2/3">
+      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-6 w-full gap-6">
+        <div className="flex-1 py-6 lg:w-2/3">
           <form onSubmit={handleSearch} className="mb-6">
             <div className="relative">
               <input
@@ -105,26 +105,27 @@ const Search = () => {
             </div>
           </form>
 
-          {/* Horizontal Tab Selector */}
-          <div className="flex gap-2 mb-6 overflow-x-auto whitespace-nowrap pb-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  setSearchQuery("");
-                  setSearchResults([]);
-                  setActiveTab(tab.id);
-                }}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
-                  activeTab === tab.id
-                    ? "bg-indigo-500 text-white"
-                    : "bg-secondary-bg dark:bg-secondary-bg-dark text-gray-900 dark:text-gray-100 hover:bg-tertiary-bg dark:hover:bg-tertiary-bg-dark"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          {!searchQuery && (
+            <div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar whitespace-nowrap pb-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSearchResults([]);
+                    setActiveTab(tab.id);
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                    activeTab === tab.id
+                      ? "bg-indigo-500 text-white"
+                      : "bg-secondary-bg dark:bg-secondary-bg-dark text-gray-900 dark:text-gray-100 hover:bg-tertiary-bg dark:hover:bg-tertiary-bg-dark"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Loading State */}
           {loading && (
@@ -162,8 +163,7 @@ const Search = () => {
             </div>
           )}
 
-          {/* Tab Content */}
-          {!loading && (!searchQuery || searchResults.length === 0) && (
+          {!loading && !searchQuery && (
             <div className="bg-secondary-bg dark:bg-secondary-bg-dark rounded-xl shadow-md p-4">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                 {tabs.find((tab) => tab.id === activeTab)?.label}

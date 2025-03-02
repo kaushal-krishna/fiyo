@@ -18,8 +18,8 @@ const CustomTopNav = ({
 
   return (
     <div
-      className={`flex flex-col border-b border-gray-700 w-full sticky top-0 z-50 ${className}`}
-      style={{height: customTabsHeight }}
+      className={`flex flex-col border-b border-gray-300 dark:border-gray-800  w-full sticky top-0 z-50 ${className}`}
+      style={{ height: customTabsHeight }}
     >
       <div className="flex flex-row items-center h-[70px] w-full px-4 gap-4 bg-body-bg dark:bg-body-bg-dark">
         {prevPage && (
@@ -56,7 +56,11 @@ const CustomTopNav = ({
         {rightIcons.length > 0 && (
           <div className="flex flex-row items-center gap-8">
             {rightIcons.map((icon, index) => (
-              <button key={index} className="cursor-pointer" onClick={icon.onPress}>
+              <button
+                key={index}
+                className="cursor-pointer"
+                onClick={icon.onPress}
+              >
                 {icon.resource}
               </button>
             ))}

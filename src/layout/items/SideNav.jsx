@@ -42,7 +42,7 @@ const SideNav = () => {
         },
         { to: "/direct/inbox", icon: ChatIcon, label: "Messages" },
         {
-          to: "/profile",
+          to: "/u/kaushal",
           icon: ProfileIcon,
           label: "Profile",
           extraProps: {

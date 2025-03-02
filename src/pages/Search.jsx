@@ -90,7 +90,7 @@ const Search = () => {
 
   return (
     <div className="flex justify-center mx-auto w-full">
-      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl mx-6 w-full gap-6">
+      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl px-6 w-full gap-6">
         <div className="flex-1 py-6 lg:w-2/3">
           <form onSubmit={handleSearch} className="mb-6">
             <div className="relative">

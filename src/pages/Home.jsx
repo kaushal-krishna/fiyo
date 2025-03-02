@@ -20,7 +20,7 @@ const Home = () => {
       id: "1",
       profilePic: "https://i.pravatar.cc/200?img=1",
       username: "john.doe",
-      songTitle: "Echoes • Fleetwood Band",
+      songInfo: { name: "Echoes", artist: "Fleetwood Band" },
       postImage:
         "https://demo.tiny.pictures/main/example5.jpg?width=500&height=250",
       likesCount: 215,
@@ -33,7 +33,7 @@ const Home = () => {
       id: "2",
       profilePic: "https://i.pravatar.cc/200?img=2",
       username: "jane.smith",
-      songTitle: "Golden Hour • JVKE",
+      songInfo: { name: "Golden Hour", artist: "JVKE" },
       postImage:
         "https://demo.tiny.pictures/main/example1.jpg?width=500&height=250",
       likesCount: 332,
@@ -46,7 +46,7 @@ const Home = () => {
       id: "3",
       profilePic: "https://i.pravatar.cc/200?img=3",
       username: "mike.breeze",
-      songTitle: "Ocean Eyes • Billie Eilish",
+      songInfo: { name: "Ocean Eyes", artist: "Billie Eilish" },
       postImage:
         "https://demo.tiny.pictures/main/example3.jpg?width=500&height=250",
       likesCount: 450,
@@ -59,7 +59,7 @@ const Home = () => {
       id: "4",
       profilePic: "https://i.pravatar.cc/200?img=4",
       username: "sarah.connor",
-      songTitle: "Blinding Lights • The Weeknd",
+      songInfo: { name: "Blinding Lights", artist: "The Weeknd" },
       postImage:
         "https://demo.tiny.pictures/main/example4.jpg?width=500&height=250",
       likesCount: 789,
@@ -72,7 +72,7 @@ const Home = () => {
 
   return (
     <div className="flex justify-center mx-auto w-full">
-      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl w-full md:mx-6 gap-6">
+      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl w-full md:px-6 gap-6">
         <div className="flex-1 lg:w-2/3">
           <CustomTopNav
             className="block md:hidden"
@@ -106,13 +106,13 @@ const Home = () => {
           </div> */}
 
           {/* Posts Section */}
-          <div className="flex flex-col items-centerw-full py-6 gap-6 ">
+          <div className="flex flex-col items-center w-full py-6 gap-6 ">
             {posts.map((post, index) => (
               <Post
                 key={index}
                 profilePic={post.profilePic}
                 username={post.username}
-                songTitle={post.songTitle}
+                songInfo={post.songInfo}
                 postImage={post.postImage}
                 likesCount={post.likesCount}
                 commentsCount={post.commentsCount}
@@ -125,7 +125,7 @@ const Home = () => {
         </div>
 
         {/* Right Section - Suggestions (only for large screens) */}
-        <div className="hidden lg:block lg:w-1/3">
+        <div className="flex-1 hidden lg:block lg:w-1/3">
           <Suggestions />
         </div>
       </div>

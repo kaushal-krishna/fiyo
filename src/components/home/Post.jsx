@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Post = ({
   profilePic,
   username,
-  songTitle,
+  songInfo,
   postImage,
   likesCount,
   commentsCount,
@@ -26,7 +27,12 @@ const Post = ({
             <p className="text-gray-900 dark:text-gray-100 font-bold text-base">
               {username}
             </p>
-            <p className="text-gray-400 text-xs">{songTitle}</p>
+            <Link
+              to={`/music?q=${songInfo.name}`}
+              className="text-gray-400 text-xs hover:underline cursor-pointer"
+            >
+              {`${songInfo.name} • ${songInfo.artist}`}
+            </Link>
           </div>
         </div>
         <button className="cursor-pointer">

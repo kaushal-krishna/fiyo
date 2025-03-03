@@ -23,9 +23,14 @@ fiyoAxios.interceptors.response.use(
   async (error) => {
     if (error.response?.data?.message === "ATInvalidError") {
       await refreshAccessToken();
+    } else if (error.response?.data?.message === "RTInvalidError") {
+      localStorage.clear("userInfo");
+      window.location.reload();
     }
     return Promise.reject(error);
   }
 );
+
+
 
 export default fiyoAxios;

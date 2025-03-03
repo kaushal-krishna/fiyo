@@ -33,7 +33,7 @@ function App() {
   );
 
   return (
-    <div className="flex min-h-screen bg-body-bg dark:bg-body-bg-dark text-black dark:text-white ">
+    <div className="flex min-h-screen bg-body-bg dark:bg-body-bg-dark text-black dark:text-white">
       {isUserAuthenticated && <NavStack />}
       <main className="w-full max-w-7xl mx-auto md:px-6 pb-16 lg:pb-0">
         <Routes>

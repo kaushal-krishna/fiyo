@@ -18,6 +18,7 @@ export const getUser = async username => {
     return data.data;
   } catch (error) {
     console.error(`Error in getUser: ${error}`);
+    return error;
   }
 };
 

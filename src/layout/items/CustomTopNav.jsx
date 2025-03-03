@@ -39,12 +39,12 @@ const CustomTopNav = ({
           <img
             src={logoImage}
             alt="Logo"
-            className={`w-12 h-12 ml-2 ${logoStyle}`}
+            className={`w-10 h-10 ml-2 ${logoStyle}`}
           />
         )}
 
         {title && (
-          <h1 className="text-2xl font-bold text-primary-text dark:text-primary-text-dark">
+          <h1 className="text-xl font-bold text-primary-text dark:text-primary-text-dark">
             {title}
           </h1>
         )}

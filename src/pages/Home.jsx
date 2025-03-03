@@ -1,4 +1,3 @@
-// Home.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Post from "../components/home/Post.jsx";
@@ -71,61 +70,62 @@ const Home = () => {
   ];
 
   return (
-    <div className="flex justify-center mx-auto w-full">
-      <div className="flex-1 flex flex-col lg:flex-row w-full gap-6">
-        <div className="flex-1 lg:w-2/3">
+    <div className="flex justify-center mx-auto w-full min-h-screen">
+      <div className="flex flex-col lg:flex-row max-w-7xl w-full gap-6">
+        {/* Main Content */}
+        <div className="flex-1 lg:w-2/3 w-full">
           <CustomTopNav
             className="block md:hidden"
             logoImage="https://cdnfiyo.github.io/img/logos/flexiyo.png"
             rightIcons={[
               {
                 resource: <CreateIcon size={32} />,
-                onPress: () => navigate("/create"),
+                onClick: () => navigate("/create"),
               },
               {
                 resource: <NotificationsIcon size={32} />,
-                onPress: () => navigate("/notifications"),
+                onClick: () => navigate("/notifications"),
               },
               {
                 resource: <ChatIcon size={32} />,
-                onPress: () => navigate("/direct/inbox"),
+                onClick: () => navigate("/direct/inbox"),
               },
             ]}
           />
-          {/* Feed Section */}
-          {/* <div className="w-full overflow-x-auto scrollbar-hide">
-            <div className="flex gap-4 min-w-max">
-              {feedItems.map((item) => (
-                <FeedCard
-                  key={item.id}
-                  heading={item.heading}
-                  text={item.text}
+          <div className="flex flex-col w-full max-w-3xl mx-auto py-6">
+            {/* Feed Section */}
+            {/* <div className="flex overflow-x-auto no-scrollbar gap-4 my-6">
+                {feedItems.map((item) => (
+                  <FeedCard
+                    key={item.id}
+                    heading={item.heading}
+                    text={item.text}
+                  />
+                ))}
+              </div> */}
+
+            {/* Posts Section */}
+            <div className="flex flex-col items-center w-full gap-6">
+              {posts.map((post, index) => (
+                <Post
+                  key={index}
+                  profilePic={post.profilePic}
+                  username={post.username}
+                  songInfo={post.songInfo}
+                  postImage={post.postImage}
+                  likesCount={post.likesCount}
+                  commentsCount={post.commentsCount}
+                  sharesCount={post.sharesCount}
+                  caption={post.caption}
+                  uploadDate={post.uploadDate}
                 />
               ))}
             </div>
-          </div> */}
-
-          {/* Posts Section */}
-          <div className="flex flex-col items-center w-full py-6 gap-6 ">
-            {posts.map((post, index) => (
-              <Post
-                key={index}
-                profilePic={post.profilePic}
-                username={post.username}
-                songInfo={post.songInfo}
-                postImage={post.postImage}
-                likesCount={post.likesCount}
-                commentsCount={post.commentsCount}
-                sharesCount={post.sharesCount}
-                caption={post.caption}
-                uploadDate={post.uploadDate}
-              />
-            ))}
           </div>
         </div>
 
-        {/* Right Section - Suggestions (only for large screens) */}
-        <div className="flex-1 hidden lg:block lg:w-1/3">
+        {/* Suggestions Section */}
+        <div className="hidden lg:block lg:w-1/3">
           <Suggestions />
         </div>
       </div>

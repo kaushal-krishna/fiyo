@@ -20,7 +20,7 @@ const Post = ({
         <div className="flex gap-4">
           <img
             src={profilePic}
-            className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-700 cursor-pointer"
+            className="w-10 h-10 rounded-full bg-secondary-bg dark:bg-secondary-bg-dark border border-gray-300 dark:border-gray-800 cursor-pointer"
             alt="Profile Picture"
           />
           <div className="flex flex-col">

@@ -58,7 +58,7 @@ const Music = () => {
         <div className="flex-1 lg:w-2/3">
           <div className="flex flex-col">
             <CustomTopNav
-              prevPage="GoBack"
+              logoImage="https://cdnfiyo.github.io/img/logos/jioSaavn.png"
               midComponent={searchQuery && <SearchBox />}
               rightIcons={
                 !searchQuery && [
@@ -68,7 +68,7 @@ const Music = () => {
                   },
                   {
                     resource: <FaGear size={20} />,
-                    onClick: () => console.log("Settings clicked"), // Updated empty function to log
+                    onClick: () => {},
                   },
                 ]
               }

@@ -15,7 +15,7 @@
   --color-secondary-bg-dark: #191d28;
   --color-tertiary-bg: #dcdfe4;
   --color-tertiary-bg-dark: #222933;
-  --color-quaternary-bg: #b3b9c4;
+  --color-quaternary-bg: #cfd4de;
   --color-quaternary-bg-dark: #272e39;
   --color-transparent-bg: rgba(245, 245, 247, 0.789);
   --color-transparent-bg-dark: rgba(33, 36, 39, 0.789);
@@ -32,14 +32,4 @@
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none; /* IE/Edge */
-}
-
-/* Fade-in animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-in-out;
 }

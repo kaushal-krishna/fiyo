@@ -1,8 +1,6 @@
 import axios from "axios";
 import { refreshAccessToken } from "../hooks/useTokenUtils.js";
-
-const appOrigin = "https://flexiyo.web.app";
-
+ 
 const fiyoAxios = axios.create();
 
 fiyoAxios.interceptors.request.use(
@@ -10,8 +8,7 @@ fiyoAxios.interceptors.request.use(
     const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
     config.headers = {
-      ...config.headers,
-      app_origin: appOrigin,
+      ...config.headers, 
       fiyoat: userInfo?.headers?.fiyoat,
       fiyodid: userInfo?.headers?.fiyodid,
     };

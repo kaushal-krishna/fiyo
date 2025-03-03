@@ -51,11 +51,10 @@ export const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
-        isUserAuthenticated,
-        setIsUserAuthenticated,
         userInfo,
         loading,
         setLoading,
+        isUserAuthenticated,
         saveUserInfo,
         clearUserInfo,
       }}

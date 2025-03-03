@@ -7,7 +7,7 @@ import UserContext from "../../context/items/UserContext";
 import { fiyoauthApiBaseUri } from "../../constants.js";
 
 const Login = () => {
-  const { setIsUserAuthenticated, saveUserInfo } = useContext(UserContext);
+  const { isUserAuthenticated, saveUserInfo } = useContext(UserContext);
   const [alertText, setAlertText] = useState("");
   const [isForgotPasswordClicked, setIsForgotPasswordClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,12 +31,10 @@ const Login = () => {
   });
 
   useEffect(() => {
-    const storedUserInfo = localStorage.getItem("userInfo");
-    if (storedUserInfo) {
-      setIsUserAuthenticated(true);
+    if (isUserAuthenticated) {
       navigate("/", { state: { from: "/auth/login" }, replace: true });
     }
-  }, [setIsUserAuthenticated, navigate]);
+  }, [isUserAuthenticated, navigate]);
 
   const handleLoginUser = async (values) => {
     setIsLoading(true);
@@ -67,10 +65,6 @@ const Login = () => {
           fiyodid: response.data.data.headers.fiyodid,
         },
       };
-
-      console.log("Constructed userData:", userData);
-
-      setIsUserAuthenticated(true);
       saveUserInfo(userData);
       localStorage.setItem("userInfo", JSON.stringify(userData));
       setIsLoading(false);
@@ -83,19 +77,18 @@ const Login = () => {
         "Something went wrong";
       setAlertText(errorMessage);
       setIsLoading(false);
-      setIsUserAuthenticated(false);
     }
   };
 
   return (
-    <section className="min-h-screen bg-body-bg dark:bg-body-bg-dark from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl flex flex-col lg:flex-row gap-8 lg:gap-0 bg-white dark:bg-gray-800 shadow-xl lg:rounded-2xl overflow-hidden">
+    <section className="min-h-screen bg-body-bg dark:bg-body-bg-dark from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-start lg:items-center justify-center p-4">
+      <div className="w-full max-w-4xl flex flex-col lg:flex-row gap-8 lg:gap-0 bg-white dark:bg-gray-800 lg:rounded-2xl overflow-hidden">
         {/* Left Section - Hidden on md and below */}
         <div className="hidden lg:flex lg:w-1/2 p-8 lg:p-12 bg-gradient-to-br from-white via-pink-200 to-blue-300 text-gray-800 flex-col justify-center items-center">
           <img
             src="https://cdnfiyo.github.io/img/logos/flexiyo.png"
             alt="Flexiyo Logo"
-            className="w-24 h-24 lg:w-28 lg:h-28 rounded-full mb-6 border-4 border-gray-200 shadow-lg"
+            className="w-24 h-24 lg:w-28 lg:h-28 rounded-full mb-6 border-4 border-gray-200"
           />
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-center">
             Welcome to Flexiyo
@@ -175,7 +168,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full sm:w-auto px-6 py-3 bg-indigo-600 text-white rounded-lg lg:rounded-xl hover:bg-indigo-700 disabled:bg-indigo-400 transition-all duration-200 font-medium shadow-md cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3 bg-indigo-600 text-white rounded-lg lg:rounded-xl hover:bg-indigo-700 disabled:bg-indigo-400 transition-all duration-200 font-medium cursor-pointer"
               >
                 {isLoading ? "Signing In..." : "Sign In"}
               </button>

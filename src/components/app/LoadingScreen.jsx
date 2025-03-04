@@ -1,4 +1,5 @@
 import React from "react";
+import splashImage from "../../assets/images/splash.png";
 
 const LoadingScreen = () => {
   const width = window.innerWidth;
@@ -6,7 +7,7 @@ const LoadingScreen = () => {
   return (
     <div className={`flex flex-1 justify-center items-center h-screen`}>
       <img
-        src="../../assets/images/splash.png"
+        src={splashImage}
         alt="Loading"
         className="w-full h-auto"
         style={{ width: width, objectFit: "contain" }}

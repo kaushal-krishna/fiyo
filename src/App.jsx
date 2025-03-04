@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
+import AppContext from "./context/items/AppContext";
 import UserContext from "./context/items/UserContext";
+import LoadingScreen from "./components/app/LoadingScreen";
 import NavStack from "./layout/NavStack";
 import {
   Home,
@@ -13,7 +15,12 @@ import {
 } from "./pages";
 
 function App() {
-  const { isUserAuthenticated } = useContext(UserContext);
+  const {isAppLoading} = useContext(AppContext);
+  const { isUserAuthenticated, loading } = useContext(UserContext);
+
+  if (isAppLoading || loading) {
+    return <LoadingScreen />;
+  }
 
   const authenticatedRoutes = (
     <>

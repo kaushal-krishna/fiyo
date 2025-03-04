@@ -15,6 +15,7 @@ import {
   sendMateRequest,
   unsendMateRequest,
 } from "../hooks/useConnectionUtils.js";
+import PinHead3D from "../components/profile/PinHead3D.jsx";
 
 const Profile = () => {
   const { userInfo } = useContext(UserContext);
@@ -73,7 +74,6 @@ const Profile = () => {
       : unsendMateRequest(user?.id).then(() => setMateBtnText("Commate"));
   };
 
-  // Show loading spinner while fetching
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -82,7 +82,6 @@ const Profile = () => {
     );
   }
 
-  // Show 404 page if user is null (indicating not found)
   if (!user) {
     return (
       <div className="flex justify-center mx-auto w-full min-h-screen">
@@ -107,7 +106,7 @@ const Profile = () => {
           <div className="flex flex-col w-full max-w-3xl mx-auto">
             <CustomTopNav
               prevPage={userInfo?.username === user?.username ? null : "GoBack"}
-              title={user?.username}
+              title={user?.username}  
               rightIcons={[
                 {
                   resource: <FaEllipsisVertical />,
@@ -117,25 +116,25 @@ const Profile = () => {
             />
             <img
               src={user?.banner}
-              className="w-full h-48 object-cover bg-primary-bg dark:bg-primary-bg-dark"
+              className="w-full h-40 rounded-b-xl object-cover bg-primary-bg dark:bg-primary-bg-dark"
               alt="Profile Banner"
             />
-            <div className="px-6">
-              <div className="flex flex-row items-center justify-between bg-gray-100 dark:bg-secondary-bg-dark rounded-3xl px-6 py-4 gap-6 -mt-16 w-full h-40">
+            <div className="w-full max-w-2xl mx-auto px-6">
+              <div className="flex flex-row items-center justify-between bg-gray-100 dark:bg-secondary-bg-dark rounded-3xl px-6 py-4 gap-4 -mt-20 w-full h-40">
                 <div className="flex-shrink-0">
                   <img
                     src={user?.avatar}
-                    className="w-24 h-24 aspect-square rounded-full object-cover bg-tertiary-bg dark:bg-tertiary-bg-dark"
+                    className="w-20 h-20 sm:w-24 sm:h-24 aspect-square rounded-full object-cover bg-tertiary-bg dark:bg-tertiary-bg-dark"
                     alt="Profile Avatar"
                   />
                 </div>
                 <div className="flex-1 h-full">
                   <div className="flex flex-row items-center justify-around h-1/2 w-full">
                     <div className="flex flex-col items-center justify-center gap-1 cursor-pointer">
-                      <span className="text-xl text-center font-bold">
+                      <span className="text-md text-center font-bold">
                         {user?.posts_count || 0}
                       </span>
-                      <span className="text-sm text-center text-gray-400">
+                      <span className="text-xs text-center text-gray-400">
                         Posts
                       </span>
                     </div>
@@ -147,10 +146,10 @@ const Profile = () => {
                         )
                       }
                     >
-                      <span className="text-xl text-center font-bold">
+                      <span className="text-md text-center font-bold">
                         {user?.followers_count || 0}
                       </span>
-                      <span className="text-sm text-center text-gray-400">
+                      <span className="text-xs text-center text-gray-400">
                         Followers
                       </span>
                     </button>
@@ -162,22 +161,22 @@ const Profile = () => {
                         )
                       }
                     >
-                      <span className="text-xl text-center font-bold">
+                      <span className="text-md text-center font-bold">
                         {user?.following_count || 0}
                       </span>
-                      <span className="text-sm text-center text-gray-400">
+                      <span className="text-xs text-center text-gray-400">
                         Following
                       </span>
                     </button>
                   </div>
                   <div className="flex flex-row items-center justify-between h-1/2 w-full gap-2 sm:gap-4 mt-2">
                     {userInfo?.username === user?.username ? (
-                      <button className="flex-1 bg-tertiary-bg dark:bg-tertiary-bg-dark rounded-full py-2 text-md text-center hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark cursor-pointer transition">
+                      <button className="flex-1 bg-tertiary-bg dark:bg-tertiary-bg-dark rounded-full py-2 text-sm text-center hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark cursor-pointer transition">
                         Edit Profile
                       </button>
                     ) : (
                       <button
-                        className={`flex-1 rounded-full py-2 text-md text-center text-white ${
+                        className={`flex-1 rounded-full py-2 text-sm text-center text-white ${
                           followBtnText === "Follow"
                             ? "bg-blue-500 hover:bg-blue-600"
                             : "bg-tertiary-bg dark:bg-tertiary-bg-dark hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark"
@@ -189,7 +188,7 @@ const Profile = () => {
                     )}
                     {userInfo?.username === user?.username ? (
                       <button
-                        className="flex-1 bg-tertiary-bg dark:bg-tertiary-bg-dark rounded-full py-2 text-md text-center hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark cursor-pointer transition"
+                        className="flex-1 bg-tertiary-bg dark:bg-tertiary-bg-dark rounded-full py-2 text-sm text-center hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark cursor-pointer transition"
                         onClick={() =>
                           getUserMates().then((res) => console.log(res))
                         }
@@ -198,7 +197,7 @@ const Profile = () => {
                       </button>
                     ) : (
                       <button
-                        className={`flex-1 rounded-full py-2 text-md text-center text-white ${
+                        className={`flex-1 rounded-full py-2 text-sm text-center text-white ${
                           mateBtnText === "Commate"
                             ? "bg-green-500 hover:bg-green-600"
                             : "bg-tertiary-bg dark:bg-tertiary-bg-dark hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark"

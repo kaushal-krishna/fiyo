@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FaSearch, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 // import SearchSheet from "../components/music/SearchSheet";
 import CustomTopNav from "../layout/items/CustomTopNav";
@@ -44,7 +43,11 @@ const Music = () => {
               aria-label="Clear search"
               title="Clear"
             >
-              {searchText ? <FaTimes size={20} /> : <FaSearch size={20} />}
+              {searchText ? (
+                <i className="fa fa-times text-xl" />
+              ) : (
+                <i className="fa fa-search text-xl" />
+              )}
             </button>
           </div>
         </div>
@@ -63,11 +66,11 @@ const Music = () => {
               rightIcons={
                 !searchQuery && [
                   {
-                    resource: <FaSearch size={20} />,
+                    resource: <i className="fa fa-search text-2xl" />,
                     onClick: () => setSearchQuery(true),
                   },
                   {
-                    resource: <FaGear size={20} />,
+                    resource: <i className="fa fa-gear text-2xl" />,
                     onClick: () => {},
                   },
                 ]

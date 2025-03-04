@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { fiyochatSrvBaseUri } from "../../constants.js";
 import UserContext from "./UserContext";
 import { getBulkUsers } from "../../hooks/useUserUtils.js";
@@ -10,7 +16,6 @@ import {
 } from "../../hooks/useChatUtils.js";
 import { io } from "socket.io-client";
 
-const SOCKET_URL = fiyochatSrvBaseUri;
 const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
@@ -27,18 +32,9 @@ export const SocketProvider = ({ children }) => {
   const initialized = useRef(false);
 
   useEffect(() => {
-    if (!isUserAuthenticated) {
-      if (socketRef.current) {
-        console.log("Disconnecting socket for unauthenticated user");
-        socketRef.current?.disconnect();
-        socketRef.current = null;
-      }
-      return;
-    }
-
-    if (!socketRef.current) {
+    if (isUserAuthenticated && !socketRef.current) {
       console.log("Creating new socket connection");
-      socketRef.current = io(SOCKET_URL, {
+      socketRef.current = io(fiyochatSrvBaseUri, {
         withCredentials: true,
         transports: ["websocket"],
         auth: {
@@ -50,15 +46,15 @@ export const SocketProvider = ({ children }) => {
       if (!initialized.current) {
         socketRef.current?.on("connect", () => {
           console.log("Socket Connected:", socketRef.current?.id);
-          setSocketUser(prevState => ({
+          setSocketUser((prevState) => ({
             ...prevState,
             id: socketRef.current?.id,
           }));
         });
 
-        socketRef.current?.on("roomsListResponse", async response => {
+        socketRef.current?.on("roomsListResponse", async (response) => {
           const inboxItems = await Promise.all(
-            response.map(async room => {
+            response.map(async (room) => {
               if (room.roomDetails.type !== "private") {
                 return room;
               }
@@ -78,29 +74,29 @@ export const SocketProvider = ({ children }) => {
               delete room.messageStock;
 
               return room;
-            }),
+            })
           );
 
-          const recipientUserIds = response.flatMap(room =>
+          const recipientUserIds = response.flatMap((room) =>
             room.roomDetails.members
-              .filter(member => member !== userInfo.id)
-              .map(member => member),
+              .filter((member) => member !== userInfo.id)
+              .map((member) => member)
           );
 
           const recipientUsers = await getBulkUsers(recipientUserIds);
 
-          inboxItems.forEach(item => {
+          inboxItems.forEach((item) => {
             item.recipientUser = recipientUsers.find(
-              user =>
+              (user) =>
                 item.roomDetails.members.includes(user.id) &&
-                user.id !== userInfo.id,
+                user.id !== userInfo.id
             );
           });
 
           setInboxItems(inboxItems);
         });
 
-        socketRef.current?.on("message_received", async response => {
+        socketRef.current?.on("message_received", async (response) => {
           const { id, senderId, content, type, roomId, sentAt } = response;
 
           const messageStock = initializeMessageStock(roomId);
@@ -116,20 +112,20 @@ export const SocketProvider = ({ children }) => {
           const updatedStock = updateMessageStocks(roomId, messageStock);
 
           const lastLog = await getLastLog(updatedStock, userInfo.id);
-          setInboxItems(prev =>
-            prev.map(item =>
-              item?.roomDetails?.id === roomId ? { ...item, lastLog } : item,
-            ),
+          setInboxItems((prev) =>
+            prev.map((item) =>
+              item?.roomDetails?.id === roomId ? { ...item, lastLog } : item
+            )
           );
         });
 
-        socketRef.current?.on("message_seen", async response => {
+        socketRef.current?.on("message_seen", async (response) => {
           const { id, senderId, roomId, seenAt } = response;
 
           const messageStock = initializeMessageStock(roomId);
 
           const senderIndex = messageStock.seenBy.findIndex(
-            user => user.userId === senderId,
+            (user) => user.userId === senderId
           );
 
           if (senderIndex !== -1) {
@@ -146,20 +142,20 @@ export const SocketProvider = ({ children }) => {
           const updatedStock = updateMessageStocks(roomId, messageStock);
 
           const lastLog = await getLastLog(updatedStock, userInfo.id);
-          setInboxItems(prev =>
-            prev.map(item =>
-              item?.roomDetails?.id === roomId ? { ...item, lastLog } : item,
-            ),
+          setInboxItems((prev) =>
+            prev.map((item) =>
+              item?.roomDetails?.id === roomId ? { ...item, lastLog } : item
+            )
           );
         });
 
-        socketRef.current?.on("error", async response => {
-          if (response.error.name === "ATInvalidError") {
+        socketRef.current?.on("error", async (response) => {
+          if (response.message === "ATInvalidError") {
             refreshAccessToken();
           }
         });
 
-        socketRef.current?.on("disconnect", response => {
+        socketRef.current?.on("disconnect", () => {
           console.log("Socket Disconnected:", socketRef.current?.id);
         });
 
@@ -169,7 +165,7 @@ export const SocketProvider = ({ children }) => {
 
     localStorage.setItem(
       "sessionMessageStocks",
-      JSON.stringify(sessionMessageStocks),
+      JSON.stringify(sessionMessageStocks)
     );
 
     return () => {

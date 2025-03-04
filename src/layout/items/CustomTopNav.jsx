@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const CustomTopNav = ({
   prevPage,
+  prevPageIconStyle = "",
+  keepBorder = true,
   logoImage,
   logoStyle = "",
   title,
@@ -18,12 +20,15 @@ const CustomTopNav = ({
 
   return (
     <div
-      className={`flex flex-col border-b border-gray-300 dark:border-gray-800  w-full sticky top-0 z-50 ${className}`}
+      className={`flex flex-col ${
+        keepBorder && "border-b"
+      } border-gray-300 dark:border-gray-800  w-full sticky top-0 z-50 ${className}`}
       style={{ height: customTabsHeight }}
     >
-      <div className="flex flex-row items-center h-[70px] w-full px-4 gap-4 bg-body-bg dark:bg-body-bg-dark">
+      <div className="flex flex-row items-center h-[70px] w-full px-4 gap-4 cursor-pointer">
         {prevPage && (
           <button
+            className={prevPageIconStyle}
             onClick={() =>
               prevPage === "GoBack" ? navigate(-1) : navigate(prevPage)
             }
@@ -43,11 +48,7 @@ const CustomTopNav = ({
           />
         )}
 
-        {title && (
-          <h1 className="text-xl font-bold text-primary-text dark:text-primary-text-dark">
-            {title}
-          </h1>
-        )}
+        {title && <h1 className="text-xl font-bold">{title}</h1>}
 
         <div className="flex-1 flex items-center justify-center">
           {midComponent}

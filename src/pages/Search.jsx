@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";
 import Suggestions from "../components/app/Suggestions";
 import { fiyoauthApiBaseUri } from "../constants";
 import fiyoAxios from "../utils/fiyoAxios";
@@ -33,10 +32,8 @@ const Search = () => {
       setSearchResults([]);
     }
 
-    // Mock fetching trends (replace with actual API call if available)
     const fetchTrends = async () => {
       try {
-        // Simulated trends data (replace with real API endpoint)
         const mockTrends = [
           { name: "#AIRevolution", volume: "1.2M" },
           { name: "#SpaceTravel", volume: "850K" },
@@ -68,7 +65,7 @@ const Search = () => {
                 placeholder="Search users, topics, or hashtags..."
                 className="w-full bg-secondary-bg dark:bg-secondary-bg-dark rounded-full p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               />
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <i className="fa fa-search text-lg absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
 
             {/* Loading State */}

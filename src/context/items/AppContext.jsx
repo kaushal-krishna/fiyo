@@ -8,11 +8,10 @@ export const AppProvider = ({ children }) => {
     return localStorage.getItem("contentQuality") || "normal";
   });
   const [connectedToInternet, setConnectedToInternet] = useState(() => {
-    return navigator.onLine; // Web API for initial connection status
+    return navigator.onLine;
   });
 
   useEffect(() => {
-    // Listen for online/offline events
     const handleOnline = () => setConnectedToInternet(true);
     const handleOffline = () => setConnectedToInternet(false);
 
@@ -27,8 +26,56 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     const initializeApp = async () => {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setIsAppLoading(false);
+      const startTime = Date.now();
+      try {
+        await new Promise((resolve) => {
+          if (document.readyState === "complete") {
+            resolve();
+          } else {
+            window.addEventListener("load", resolve, { once: true });
+          }
+        });
+
+        const images = document.getElementsByTagName("img");
+        const imagePromises = Array.from(images).map((img) => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        });
+
+        const videos = document.getElementsByTagName("video");
+        const videoPromises = Array.from(videos).map((video) => {
+          if (video.readyState >= 4) return Promise.resolve();
+          return new Promise((resolve) => {
+            video.onloadeddata = resolve;
+            video.onerror = resolve;
+          });
+        });
+
+        await Promise.all([...imagePromises, ...videoPromises]);
+
+        const timeoutPromise = new Promise((resolve) => {
+          setTimeout(resolve, 10000);
+        });
+
+        await Promise.race([
+          Promise.all([...imagePromises, ...videoPromises]),
+          timeoutPromise,
+        ]);
+
+        const elapsedTime = Date.now() - startTime;
+        if (elapsedTime < 500) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, 700 - elapsedTime)
+          );
+        }
+      } catch (error) {
+        console.error("Error during app initialization:", error);
+      } finally {
+        setIsAppLoading(false);
+      }
     };
 
     initializeApp();

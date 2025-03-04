@@ -8,14 +8,15 @@ import {
   Home,
   Search,
   Music,
+  ChatStack,
   Profile,
   AuthLogin,
-  NotFound404,
   AuthSignup,
+  NotFound404,
 } from "./pages";
 
 function App() {
-  const {isAppLoading} = useContext(AppContext);
+  const { isAppLoading } = useContext(AppContext);
   const { isUserAuthenticated, loading } = useContext(UserContext);
 
   if (isAppLoading || loading) {
@@ -27,6 +28,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/search" element={<Search />} />
       <Route path="/music" element={<Music />} />
+      <Route path="/direct/t/:roomId" element={<ChatStack />} />
+      <Route path="/direct/inbox" element={<ChatStack />} />
       <Route path="/u/:username" element={<Profile />} />
     </>
   );
@@ -42,7 +45,7 @@ function App() {
   return (
     <div className="flex min-h-screen bg-body-bg dark:bg-body-bg-dark text-black dark:text-white">
       {isUserAuthenticated && <NavStack />}
-      <main className="w-full max-w-7xl mx-auto md:px-6 pb-16 lg:pb-0">
+      <main className="w-full max-w-7xl mx-auto md:px-6 pb-12 md:pb-0">
         <Routes>
           {isUserAuthenticated ? authenticatedRoutes : unauthenticatedRoutes}
           <Route path="*" element={<NotFound404 />} />

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FaEllipsisVertical } from "react-icons/fa6";
 import UserContext from "../context/items/UserContext";
 import { getUser } from "../hooks/useUserUtils.js";
 import CustomTopNav from "../layout/items/CustomTopNav";
@@ -15,14 +14,13 @@ import {
   sendMateRequest,
   unsendMateRequest,
 } from "../hooks/useConnectionUtils.js";
-import PinHead3D from "../components/profile/PinHead3D.jsx";
 
 const Profile = () => {
   const { userInfo } = useContext(UserContext);
   const { username } = useParams();
 
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null); // Default to null for easier 404 check
+  const [user, setUser] = useState(null);
   const [followBtnText, setFollowBtnText] = useState("");
   const [mateBtnText, setMateBtnText] = useState("");
 
@@ -31,7 +29,7 @@ const Profile = () => {
     getUser(username)
       .then((userData) => {
         if (userData?.status === 404) {
-          setUser(null); // Set user to null on 404
+          setUser(null);
         } else {
           setUser(userData);
           setFollowBtnText(
@@ -106,10 +104,10 @@ const Profile = () => {
           <div className="flex flex-col w-full max-w-3xl mx-auto">
             <CustomTopNav
               prevPage={userInfo?.username === user?.username ? null : "GoBack"}
-              title={user?.username}  
+              title={user?.username}
               rightIcons={[
                 {
-                  resource: <FaEllipsisVertical />,
+                  resource: <i className="fa fa-ellipsis-vertical text-2xl" />,
                   onClick: () => {},
                 },
               ]}

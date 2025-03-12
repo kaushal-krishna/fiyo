@@ -39,6 +39,7 @@ function App() {
       <Route path="*" element={<AuthLogin />} />
       <Route path="/auth/login" element={<AuthLogin />} />
       <Route path="/auth/signup" element={<AuthSignup />} />
+      <Route path="/u/:username" element={<Profile />} />
     </>
   );
 

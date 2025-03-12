@@ -51,7 +51,7 @@ const Profile = () => {
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
-        setUser(null); // Handle any error as a 404-like case
+        setUser(null);
         setLoading(false);
       });
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import debounce from "lodash/debounce";
-import { FaX, FaMagnifyingGlass, FaCheck, FaArrowRight } from "react-icons/fa6";
 
 const CreateRoomModal = ({
   isOpen,
@@ -58,7 +57,7 @@ const CreateRoomModal = ({
             className="text-gray-400 cursor-pointer transition-colors"
             onClick={onClose}
           >
-            <FaX size={20} />
+            <i className="fa fa-x" style={{ fontSize: 20 }} />
           </button>
           <h2 className="text-xl font-semibold">New Chat</h2>
           <button
@@ -68,12 +67,12 @@ const CreateRoomModal = ({
             onClick={handleSubmit}
             disabled={selectedUsers.length === 0}
           >
-            Next <FaArrowRight size={16} />
+            Next <i className="fa fa-arrow-right" style={{ fontSize: 16 }} />
           </button>
         </div>
         <div className="flex flex-col p-4 gap-4">
           <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 rounded-lg p-2">
-            <FaMagnifyingGlass className="text-gray-500 dark:text-gray-400" />
+            <i className="fa fa-magnifying-glass text-gray-500 dark:text-gray-400" />
             <input
               type="text"
               value={search}
@@ -94,7 +93,7 @@ const CreateRoomModal = ({
                     className="ml-2 cursor-pointer"
                     onClick={() => handleRemoveUser(user.id)}
                   >
-                    <FaX size={12} />
+                    <i className="fa fa-x" style={{ fontSize: 12 }} />
                   </button>
                 </div>
               ))}
@@ -140,7 +139,9 @@ const CreateRoomModal = ({
                           : "border-2 border-gray-300 dark:border-gray-600"
                       }`}
                     >
-                      {isSelected && <FaCheck size={12} />}
+                      {isSelected && (
+                        <i className="fa fa-check" style={{ fontSize: 12 }} />
+                      )}
                     </div>
                   </div>
                 );

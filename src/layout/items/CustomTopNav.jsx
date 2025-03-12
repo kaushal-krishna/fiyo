@@ -1,5 +1,4 @@
 import React from "react";
-import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const CustomTopNav = ({
@@ -33,9 +32,9 @@ const CustomTopNav = ({
               prevPage === "GoBack" ? navigate(-1) : navigate(prevPage)
             }
           >
-            <FaArrowLeft
+            <i
               size={25}
-              className="text-black dark:text-white cursor-pointer"
+              className="fa fa-arrow-left text-black dark:text-white cursor-pointer"
             />
           </button>
         )}

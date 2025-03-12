@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import SearchSheet from "../components/music/SearchSheet";
 import CustomTopNav from "../layout/items/CustomTopNav";
-import { FaGear } from "react-icons/fa6";
 
 const Music = () => {
   const [searchQuery, setSearchQuery] = useState(null);

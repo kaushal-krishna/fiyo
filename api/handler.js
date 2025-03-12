@@ -1,140 +1,125 @@
+import isBot from "isbot";
+
 const FLEXIYO_BASE_URI = "https://fiyodev.vercel.app";
 const FIYOSAAVN_API_BASE_URI = "https://fiyosaavn.vercel.app/api";
 const FIYOGQL_BASE_URI = "https://fiyogql.onrender.com/graphql";
 
-/**
- * Fetch song metadata from FiyoSaavn API.
- */
-async function getMusicMetadata(trackId) {
+/** Fetches song metadata */
+const getMusicMetadata = async (trackId) => {
   try {
-    const response = await fetch(`${FIYOSAAVN_API_BASE_URI}/songs/${trackId}`);
-    const result = await response.json();
-
-    if (result.data?.length) {
-      const songData = result.data[0];
-      return {
-        title: `${songData.name} - ${songData.artists.primary[0].name}`,
-        image: songData.image[1].url,
-        ogType: "music.song",
-      };
-    }
-  } catch (error) {
-    console.error("Error fetching song metadata:", error);
+    const res = await fetch(`${FIYOSAAVN_API_BASE_URI}/songs/${trackId}`);
+    const data = await res.json();
+    const song = data?.data?.[0];
+    return song
+      ? {
+          title: `${song.name} • Flexiyo`,
+          description: `
+            • Artists: ${song.artists.primary
+              .map((artist) => artist.name)
+              .join(", ")}\n
+            • Album: ${song.album.name}`,
+          image: song.image[1].url,
+          ogType: "music.song",
+        }
+      : null;
+  } catch {
+    return null;
   }
-  return null;
-}
+};
 
-/**
- * Fetch user metadata from Fiyo GraphQL API.
- */
-async function getUserMetadata(username) {
+/** Fetches user metadata */
+const getUserMetadata = async (username) => {
   try {
-    const response = await fetch(FIYOGQL_BASE_URI, {
+    const res = await fetch(FIYOGQL_BASE_URI, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: `{
-          getUser(username: "${username}") {
-            status { success }
-            user { full_name username avatar }
-          }
+        query: `{ 
+          getUser(username: "${username}") { 
+            status { 
+              success 
+            } 
+            user { 
+              full_name 
+              username 
+              avatar 
+              posts_count 
+              followers_count 
+              following_count 
+            }
+          } 
         }`,
       }),
     });
-
-    const result = await response.json();
-    if (result?.data?.getUser?.status.success) {
-      const { full_name, username, avatar } = result.data.getUser.user;
-      return {
-        title: `${full_name} (@${username}) • Flexiyo`,
-        image: avatar,
-        ogType: "profile",
-      };
-    }
-  } catch (error) {
-    console.error("Error fetching user metadata:", error);
+    const user = res.ok ? (await res.json())?.data?.getUser?.user : null;
+    return user
+      ? {
+          title: `${user.full_name} (@${user.username}) • Flexiyo`,
+          description: `
+            • ${user.posts_count} Posts\n
+            • ${user.followers_count} Followers\n
+            • ${user.following_count} Following\n
+            `,
+          image: user.avatar,
+          ogType: "profile",
+        }
+      : null;
+  } catch {
+    return null;
   }
-  return null;
-}
-
-/**
- * Generate Open Graph meta tags as an HTML response.
- */
-function generateMetaHtml(metadata, redirectUrl) {
-  return `
-    <html>
-      <head>
-        <title>${metadata.title}</title>
-        <meta property="og:title" content="${metadata.title}" />
-        <meta property="og:image" content="${metadata.image}" />
-        <meta property="og:url" content="${redirectUrl}" />
-        <meta property="og:type" content="${metadata.ogType}" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </head>
-      <body>
-        <script>window.location.href = "${redirectUrl}";</script>
-      </body>
-    </html>
-  `;
-}
-
-/**
- * Detects if the request is from a bot.
- */
-function isBot(userAgent) {
-  if (!userAgent) return false;
-  return /facebookexternalhit|Twitterbot|WhatsApp|Slackbot|LinkedInBot|Googlebot|Pinterestbot|Discordbot|TelegramBot/i.test(
-    userAgent
-  );
-}
-
-/**
- * API Handler for dynamic Open Graph metadata.
- */
-export default async function handler(req) {
-  try {
-    const urlObj = new URL(req.url);
-    const path = urlObj.pathname;
-    const searchParams = urlObj.searchParams;
-    const track = searchParams.get("track");
-    const username = searchParams.get("username");
-    const userAgent = req.headers.get("user-agent") || "";
-
-    let metadata = {
-      title: "Flexiyo - Flex in Your Onset",
-      image: "https://cdnfiyo.github.io/img/logos/flexiyo.png",
-      ogType: "website",
-    };
-
-    if (path === "/music" && track) {
-      const musicMetadata = await getMusicMetadata(track);
-      if (musicMetadata) metadata = musicMetadata;
-    } else if (path.startsWith("/u/") && username) {
-      const userMetadata = await getUserMetadata(username);
-      if (userMetadata) metadata = userMetadata;
-    }
-
-    const redirectUrl = `${FLEXIYO_BASE_URI}${path}`;
-
-    if (isBot(userAgent)) {
-      return new Response(generateMetaHtml(metadata, redirectUrl), {
-        headers: { "Content-Type": "text/html" },
-      });
-    }
-
-    return Response.redirect(redirectUrl, 302);
-  } catch (error) {
-    console.error("❌ Handler Error:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-}
-
-export const config = {
-  runtime: "edge",
 };
+
+/** Generates Open Graph HTML */
+const generateMetaHtml = (
+  { title, description, image, ogType },
+  redirectUrl
+) => `
+  <html>
+    <head>
+      <title>${title}</title>
+      <meta property="og:title" content="${title}" />
+      <meta property="og:description" content="${description}" />
+      <meta property="og:image" content="${image}" />
+      <meta property="og:url" content="${redirectUrl}" />
+      <meta property="og:type" content="${ogType}" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="${title}" />
+      <meta name="twitter:description" content="${description}" />
+      <meta name="twitter:image" content="${image}" />
+      <meta name="twitter:url" content="${redirectUrl}" />
+      <meta name="twitter:type" content="${ogType}" />
+    </head>
+  </html>
+`;
+
+/** API Handler (Only for Bots) */
+export default async function handler(req) {
+  if (!isBot(req.headers.get("user-agent")))
+    return new Response(null, { status: 404 });
+
+  const url = new URL(req.url);
+  const path = url.pathname;
+  const track = url.searchParams.get("track");
+  const username = path.startsWith("/u/") ? path.split("/")[2] : null;
+  const redirectUrl = `${FLEXIYO_BASE_URI}${path}`;
+
+  let metadata = {
+    title: "Flexiyo - Flex in Your Onset",
+    image: "https://cdnfiyo.github.io/img/logos/flexiyo.png",
+    ogType: "website",
+  };
+
+  if (path === "/music" && track)
+    metadata = (await getMusicMetadata(track)) || metadata;
+  if (path.startsWith("/u/") && username)
+    metadata = (await getUserMetadata(username)) || metadata;
+
+  return new Response(generateMetaHtml(metadata, redirectUrl), {
+    headers: { "Content-Type": "text/html" },
+  });
+}
+
+export const config = { runtime: "edge" };

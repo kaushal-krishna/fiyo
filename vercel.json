@@ -1,5 +1,16 @@
 {
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/handler"
+    }
+  ],
+  "handle": "filesystem",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/handler" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html",
+      "status": 404
+    }
   ]
 }

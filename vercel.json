@@ -3,12 +3,11 @@
     {
       "src": "/.*",
       "dest": "/api/handler",
-      "status": 200
+      "check": true
     },
     {
       "src": "/.*",
-      "dest": "/index.html",
-      "status": 404
+      "dest": "/index.html"
     }
   ]
 }

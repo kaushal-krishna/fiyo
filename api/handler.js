@@ -2,7 +2,7 @@ const FLEXIYO_BASE_URI = "https://fiyodev.vercel.app";
 const FIYOSAAVN_API_BASE_URI = "https://fiyosaavn.vercel.app/api";
 const FIYOGQL_BASE_URI = "https://fiyogql.onrender.com/graphql";
 
-/** Fetches song metadata */
+/** Fetch song metadata */
 const getMusicMetadata = async (trackId) => {
   try {
     const res = await fetch(`${FIYOSAAVN_API_BASE_URI}/songs/${trackId}`);
@@ -13,9 +13,7 @@ const getMusicMetadata = async (trackId) => {
     return song
       ? {
           title: `${song.name} • Flexiyo`,
-          description: `Artists: ${song.artists.primary
-            .map((a) => a.name)
-            .join(", ")} | Album: ${song.album.name}`,
+          description: `Artists: ${song.artists.primary.map((a) => a.name).join(", ")} | Album: ${song.album.name}`,
           image: song.image[1].url,
           ogType: "music.song",
         }
@@ -25,7 +23,7 @@ const getMusicMetadata = async (trackId) => {
   }
 };
 
-/** Fetches user metadata */
+/** Fetch user metadata */
 const getUserMetadata = async (username) => {
   try {
     const res = await fetch(FIYOGQL_BASE_URI, {
@@ -35,7 +33,9 @@ const getUserMetadata = async (username) => {
         query: `{ 
           getUser(username: "${username}") { 
             status { success } 
-            user { full_name username avatar posts_count followers_count following_count }
+            user { 
+              full_name username avatar posts_count followers_count following_count 
+            }
           } 
         }`,
       }),
@@ -58,10 +58,7 @@ const getUserMetadata = async (username) => {
 };
 
 /** Generates Open Graph HTML */
-const generateMetaHtml = (
-  { title, description, image, ogType },
-  redirectUrl
-) => `
+const generateMetaHtml = ({ title, description, image, ogType }, redirectUrl) => `
   <html>
     <head>
       <title>${title}</title>
@@ -79,10 +76,10 @@ const generateMetaHtml = (
   </html>
 `;
 
-/** API Handler (Only for Bots) */
+/** API Handler */
 export default async function handler(req) {
   const url = new URL(req.url);
-  const path = url.pathname;
+  const path = url.pathname.replace("/api/handler", ""); // Remove API prefix
   const trackId = url.searchParams.get("track");
   const username = path.startsWith("/u/") ? path.split("/")[2] : null;
   const redirectUrl = `${FLEXIYO_BASE_URI}${path}`;
@@ -94,7 +91,7 @@ export default async function handler(req) {
     ogType: "website",
   };
 
-  if (path === "/music" && trackId) {
+  if (path.startsWith("/music") && trackId) {
     metadata = (await getMusicMetadata(trackId)) || metadata;
   }
 

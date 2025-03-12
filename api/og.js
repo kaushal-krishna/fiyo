@@ -95,26 +95,40 @@ function isBot(userAgent) {
  * API Handler for dynamic Open Graph metadata.
  */
 export default async function handler(req, res) {
-  const { query } = req;
-  const urlObj = new URL(req.url, FLEXIYO_BASE_URI);
-  const path = urlObj.pathname;
-  const userAgent = req.headers["user-agent"] || "";
-  
-  const redirectUrl = `${FLEXIYO_BASE_URI}${path}`;
-  let metadata = null;
+  try {
+    const urlObj = new URL(req.url, FLEXIYO_BASE_URI);
+    const path = urlObj.pathname;
+    const searchParams = urlObj.searchParams;
+    const track = searchParams.get("track");
+    const username = searchParams.get("username");
+    const userAgent = req.headers["user-agent"] || "";
 
-  if (path.startsWith("/music") && query.track) {
-    metadata = await getMusicMetadata(query.track);
-  } else if (path.startsWith("/u/") && query.username) {
-    metadata = await getUserMetadata(query.username);
+    let metadata = {
+      title: "Flexiyo - Flex in Your Onset",
+      image: "https://cdnfiyo.github.io/img/logos/flexiyo.png",
+      ogType: "website",
+    };
+
+    if (path === "/music" && track) {
+      const musicMetadata = await getMusicMetadata(track);
+      if (musicMetadata) metadata = musicMetadata;
+    } else if (path.startsWith("/u/") && username) {
+      const userMetadata = await getUserMetadata(username);
+      if (userMetadata) metadata = userMetadata;
+    }
+
+    const redirectUrl = `${FLEXIYO_BASE_URI}${path}`;
+
+    if (isBot(userAgent)) {
+      res.setHeader("Content-Type", "text/html");
+      return res.status(200).send(generateMetaHtml(metadata, redirectUrl));
+    }
+
+    return res.redirect(302, redirectUrl);
+  } catch (error) {
+    console.error("❌ Handler Error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-
-  if (metadata && isBot(userAgent)) {
-    res.setHeader("Content-Type", "text/html");
-    return res.status(200).send(generateMetaHtml(metadata, redirectUrl));
-  }
-
-  return res.redirect(302, redirectUrl);
 }
 
 export const config = {

@@ -94,14 +94,14 @@ function isBot(userAgent) {
 /**
  * API Handler for dynamic Open Graph metadata.
  */
-export default async function handler(req, res) {
+export default async function handler(req) {
   try {
-    const urlObj = new URL(req.url, FLEXIYO_BASE_URI);
+    const urlObj = new URL(req.url);
     const path = urlObj.pathname;
     const searchParams = urlObj.searchParams;
     const track = searchParams.get("track");
     const username = searchParams.get("username");
-    const userAgent = req.headers["user-agent"] || "";
+    const userAgent = req.headers.get("user-agent") || "";
 
     let metadata = {
       title: "Flexiyo - Flex in Your Onset",
@@ -120,14 +120,18 @@ export default async function handler(req, res) {
     const redirectUrl = `${FLEXIYO_BASE_URI}${path}`;
 
     if (isBot(userAgent)) {
-      res.setHeader("Content-Type", "text/html");
-      return res.status(200).send(generateMetaHtml(metadata, redirectUrl));
+      return new Response(generateMetaHtml(metadata, redirectUrl), {
+        headers: { "Content-Type": "text/html" },
+      });
     }
 
-    return res.redirect(302, redirectUrl);
+    return Response.redirect(redirectUrl, 302);
   } catch (error) {
     console.error("❌ Handler Error:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
 

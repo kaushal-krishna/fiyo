@@ -10,10 +10,6 @@
         }
       ],
       "destination": "/api/handler"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 }

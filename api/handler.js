@@ -2,12 +2,6 @@ const FLEXIYO_BASE_URI = "https://fiyodev.vercel.app";
 const FIYOSAAVN_API_BASE_URI = "https://fiyosaavn.vercel.app/api";
 const FIYOGQL_BASE_URI = "https://fiyogql.onrender.com/graphql";
 
-/** Detects if the request is from a bot */
-const isBot = (userAgent) =>
-  /bot|crawler|spider|crawling|archiver|facebookexternalhit|Twitterbot|WhatsApp|Slackbot|LinkedInBot|Googlebot|Pinterestbot|Discordbot|TelegramBot|Bingbot|Yahoo! Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|facebot|ia_archiver/i.test(
-    userAgent || ""
-  );
-
 /** Fetches song metadata */
 const getMusicMetadata = async (trackId) => {
   try {
@@ -101,9 +95,6 @@ const generateMetaHtml = (
 
 /** API Handler (Only for Bots) */
 export default async function handler(req) {
-  if (!isBot(req.headers.get("user-agent")))
-    return new Response(null, { status: 404 });
-
   const url = new URL(req.url);
   const path = url.pathname;
   const track = url.searchParams.get("track");

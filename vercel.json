@@ -2,8 +2,14 @@
   "routes": [
     {
       "src": "/.*",
-      "dest": "/api/handler",
-      "check": true
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(bot|crawler|spider|crawling|archiver|facebookexternalhit|Twitterbot|WhatsApp|Slackbot|LinkedInBot|Googlebot|Pinterestbot|Discordbot|TelegramBot|Bingbot|Yahoo! Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|facebot|ia_archiver)"
+        }
+      ],
+      "dest": "/api/handler"
     },
     {
       "src": "/.*",

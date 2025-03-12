@@ -4,8 +4,6 @@ const FIYOGQL_BASE_URI = "https://fiyogql.onrender.com/graphql";
 
 /**
  * Fetch song metadata from FiyoSaavn API.
- * @param {string} trackId - The track ID to fetch metadata for.
- * @returns {Promise<{title: string, image: string, ogType: string}>}
  */
 async function getMusicMetadata(trackId) {
   try {
@@ -28,8 +26,6 @@ async function getMusicMetadata(trackId) {
 
 /**
  * Fetch user metadata from Fiyo GraphQL API.
- * @param {string} username - The username to fetch metadata for.
- * @returns {Promise<{title: string, image: string, ogType: string}>}
  */
 async function getUserMetadata(username) {
   try {
@@ -42,14 +38,8 @@ async function getUserMetadata(username) {
       body: JSON.stringify({
         query: `{
           getUser(username: "${username}") {
-            status {
-              success
-            }
-            user {
-              full_name
-              username
-              avatar
-            }
+            status { success }
+            user { full_name username avatar }
           }
         }`,
       }),
@@ -72,9 +62,6 @@ async function getUserMetadata(username) {
 
 /**
  * Generate Open Graph meta tags as an HTML response.
- * @param {object} metadata - Object containing title, image, and type.
- * @param {string} redirectUrl - The redirect URL.
- * @returns {string} - HTML content.
  */
 function generateMetaHtml(metadata, redirectUrl) {
   return `
@@ -96,8 +83,6 @@ function generateMetaHtml(metadata, redirectUrl) {
 
 /**
  * Detects if the request is from a bot.
- * @param {string} userAgent - The User-Agent header from the request.
- * @returns {boolean} - True if the request is from a bot, else false.
  */
 function isBot(userAgent) {
   if (!userAgent) return false;
@@ -113,33 +98,23 @@ export default async function handler(req, res) {
   const { query } = req;
   const urlObj = new URL(req.url, FLEXIYO_BASE_URI);
   const path = urlObj.pathname;
-  const track = query.track;
-  const username = query.username;
   const userAgent = req.headers["user-agent"] || "";
-
-  let metadata = {
-    title: "Flexiyo - Flex in Your Onset",
-    image: "https://cdnfiyo.github.io/img/logos/flexiyo.png",
-    ogType: "website",
-  };
-
-  if (path === "/music" && track) {
-    const musicMetadata = await getMusicMetadata(track);
-    if (musicMetadata) metadata = musicMetadata;
-  } else if (path.startsWith("/u/") && username) {
-    const userMetadata = await getUserMetadata(username);
-    if (userMetadata) metadata = userMetadata;
-  }
-
+  
   const redirectUrl = `${FLEXIYO_BASE_URI}${path}`;
-  const html = generateMetaHtml(metadata, redirectUrl);
+  let metadata = null;
 
-  if (isBot(userAgent)) {
-    res.setHeader("Content-Type", "text/html");
-    res.status(200).send(html);
-  } else {
-    res.redirect(302, redirectUrl);
+  if (path.startsWith("/music") && query.track) {
+    metadata = await getMusicMetadata(query.track);
+  } else if (path.startsWith("/u/") && query.username) {
+    metadata = await getUserMetadata(query.username);
   }
+
+  if (metadata && isBot(userAgent)) {
+    res.setHeader("Content-Type", "text/html");
+    return res.status(200).send(generateMetaHtml(metadata, redirectUrl));
+  }
+
+  return res.redirect(302, redirectUrl);
 }
 
 export const config = {

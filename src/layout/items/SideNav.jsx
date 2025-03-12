@@ -44,11 +44,11 @@ const SideNav = () => {
         },
         { to: "/direct/inbox", icon: ChatIcon, label: "Messages" },
         {
-          to: `/u/${userInfo?.username}`,
+          to: `/u/${userInfo?.user.username}`,
           icon: ProfileIcon,
           label: "Profile",
           extraProps: {
-            avatar: userInfo?.avatar,
+            avatar: userInfo?.user.avatar,
           },
         },
       ].map(({ to, icon: Icon, label, extraProps }) => (

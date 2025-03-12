@@ -77,18 +77,9 @@ export const GET_USER = gql`
         profession
         avatar
         banner
+        posts_count
         followers_count
         following_count
-        posts_count
-        relation {
-          follow {
-            follow_status
-            is_followed
-          }
-          mate {
-            mate_status
-          }
-        }
       }
     }
   }

@@ -84,7 +84,6 @@ const useMusicUtils = ({
     }
   };
 
-  // Cache track data in localStorage
   const cacheTrackData = async (trackData) => {
     try {
       const trackKey = `t_${trackData.id}`;

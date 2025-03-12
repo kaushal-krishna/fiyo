@@ -48,10 +48,11 @@ const Login = () => {
         variables: { input: { ...values, device_name } },
       });
 
-      if (!data?.status?.success) return;
+      const result = data.loginUser;
+      
+      if (!result.status.success) return;
 
-      const userData = data.user;
-      saveUserInfo(userData);
+      saveUserInfo(result);
       setIsLoading(false);
 
       navigate("/", { state: { from: "/auth/login" }, replace: true });

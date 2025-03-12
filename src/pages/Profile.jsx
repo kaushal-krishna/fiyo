@@ -28,7 +28,7 @@ const Profile = () => {
     setLoading(true);
     getUser(username)
       .then((response) => {
-        if(!response.status.success) return;
+        if (!response.status.success) return;
 
         const userData = response.user;
         setUser(userData);
@@ -104,7 +104,9 @@ const Profile = () => {
         <div className="flex-1 lg:w-2/3 w-full">
           <div className="flex flex-col w-full max-w-3xl mx-auto">
             <CustomTopNav
-              prevPage={userInfo?.username === user?.username ? null : "GoBack"}
+              prevPage={
+                userInfo?.user.username === user?.username ? null : "GoBack"
+              }
               title={user?.username}
               rightIcons={[
                 {
@@ -169,7 +171,7 @@ const Profile = () => {
                     </button>
                   </div>
                   <div className="flex flex-row items-center justify-between h-1/2 w-full gap-2 sm:gap-4 mt-2">
-                    {userInfo?.username === user?.username ? (
+                    {userInfo?.user.username === user?.username ? (
                       <button className="flex-1 bg-tertiary-bg dark:bg-tertiary-bg-dark rounded-full py-2 text-sm text-center hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark cursor-pointer transition">
                         Edit Profile
                       </button>
@@ -185,7 +187,7 @@ const Profile = () => {
                         {followBtnText}
                       </button>
                     )}
-                    {userInfo?.username === user?.username ? (
+                    {userInfo?.user.username === user?.username ? (
                       <button
                         className="flex-1 bg-tertiary-bg dark:bg-tertiary-bg-dark rounded-full py-2 text-sm text-center hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark cursor-pointer transition"
                         onClick={() =>

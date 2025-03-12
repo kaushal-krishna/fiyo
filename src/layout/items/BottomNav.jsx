@@ -25,10 +25,10 @@ const BottomNav = () => {
         },
         { to: "/clips", icon: ClipsIcon, label: "Clips" },
         {
-          to: `/u/${userInfo?.username}`,
+          to: `/u/${userInfo?.user.username}`,
           icon: ProfileIcon,
           extraProps: {
-            avatar: userInfo?.avatar,
+            avatar: userInfo?.user.avatar,
           },
         },
       ].map(({ to, icon: Icon, extraProps }) => (

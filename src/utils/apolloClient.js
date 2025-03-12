@@ -5,9 +5,10 @@ import {
   ApolloLink,
   from,
 } from "@apollo/client";
+import { FIYOGQL_BASE_URI } from "../constants.js";
 import { refreshAccessToken } from "../hooks/useTokenUtils.js";
 
-const httpLink = new HttpLink({ uri: "http://localhost:8000/graphql" });
+const httpLink = new HttpLink({ uri: FIYOGQL_BASE_URI });
 
 let isRefreshing = false,
   refreshPromise = null,

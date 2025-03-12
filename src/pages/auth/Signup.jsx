@@ -93,10 +93,11 @@ const Signup = () => {
         },
       });
 
-      if (!data.status.success) return;
+      const result = data.registerUser;
 
-      const userData = data.user;
-      saveUserInfo(userData);
+      if (!result.status.success) return;
+
+      saveUserInfo(result);
       setIsLoading(false);
 
       navigate("/", { state: { from: "/auth/signup" }, replace: true });

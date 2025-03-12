@@ -1,4 +1,4 @@
-import isBot from "isbot";
+import { isbot } from "isbot";
 
 const FLEXIYO_BASE_URI = "https://fiyodev.vercel.app";
 const FIYOSAAVN_API_BASE_URI = "https://fiyosaavn.vercel.app/api";
@@ -97,7 +97,7 @@ const generateMetaHtml = (
 
 /** API Handler (Only for Bots) */
 export default async function handler(req) {
-  if (!isBot(req.headers.get("user-agent")))
+  if (!isbot(req.headers.get("user-agent")))
     return new Response(null, { status: 404 });
 
   const url = new URL(req.url);

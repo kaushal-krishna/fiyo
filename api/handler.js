@@ -6,16 +6,16 @@ const FIYOGQL_BASE_URI = "https://fiyogql.onrender.com/graphql";
 const getMusicMetadata = async (trackId) => {
   try {
     const res = await fetch(`${FIYOSAAVN_API_BASE_URI}/songs/${trackId}`);
+    if (!res.ok) throw new Error("Failed to fetch song data");
     const data = await res.json();
     const song = data?.data?.[0];
+
     return song
       ? {
           title: `${song.name} • Flexiyo`,
-          description: `
-            • Artists: ${song.artists.primary
-              .map((artist) => artist.name)
-              .join(", ")}\n
-            • Album: ${song.album.name}`,
+          description: `Artists: ${song.artists.primary
+            .map((a) => a.name)
+            .join(", ")} | Album: ${song.album.name}`,
           image: song.image[1].url,
           ogType: "music.song",
         }
@@ -30,37 +30,24 @@ const getUserMetadata = async (username) => {
   try {
     const res = await fetch(FIYOGQL_BASE_URI, {
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         query: `{ 
           getUser(username: "${username}") { 
-            status { 
-              success 
-            } 
-            user { 
-              full_name 
-              username 
-              avatar 
-              posts_count 
-              followers_count 
-              following_count 
-            }
+            status { success } 
+            user { full_name username avatar posts_count followers_count following_count }
           } 
         }`,
       }),
     });
-    const user = res.ok ? (await res.json())?.data?.getUser?.user : null;
+
+    if (!res.ok) throw new Error("Failed to fetch user data");
+    const user = (await res.json())?.data?.getUser?.user;
+
     return user
       ? {
           title: `${user.full_name} (@${user.username}) • Flexiyo`,
-          description: `
-            • ${user.posts_count} Posts\n
-            • ${user.followers_count} Followers\n
-            • ${user.following_count} Following\n
-            `,
+          description: `${user.posts_count} Posts | ${user.followers_count} Followers | ${user.following_count} Following`,
           image: user.avatar,
           ogType: "profile",
         }
@@ -88,7 +75,6 @@ const generateMetaHtml = (
       <meta name="twitter:description" content="${description}" />
       <meta name="twitter:image" content="${image}" />
       <meta name="twitter:url" content="${redirectUrl}" />
-      <meta name="twitter:type" content="${ogType}" />
     </head>
   </html>
 `;
@@ -97,20 +83,24 @@ const generateMetaHtml = (
 export default async function handler(req) {
   const url = new URL(req.url);
   const path = url.pathname;
-  const track = url.searchParams.get("track");
+  const trackId = url.searchParams.get("track");
   const username = path.startsWith("/u/") ? path.split("/")[2] : null;
   const redirectUrl = `${FLEXIYO_BASE_URI}${path}`;
 
   let metadata = {
     title: "Flexiyo - Flex in Your Onset",
+    description: "Join the ultimate social experience with free music & more.",
     image: "https://cdnfiyo.github.io/img/logos/flexiyo.png",
     ogType: "website",
   };
 
-  if (path === "/music" && track)
-    metadata = (await getMusicMetadata(track)) || metadata;
-  if (path.startsWith("/u/") && username)
+  if (path === "/music" && trackId) {
+    metadata = (await getMusicMetadata(trackId)) || metadata;
+  }
+
+  if (path.startsWith("/u/") && username) {
     metadata = (await getUserMetadata(username)) || metadata;
+  }
 
   return new Response(generateMetaHtml(metadata, redirectUrl), {
     headers: { "Content-Type": "text/html" },

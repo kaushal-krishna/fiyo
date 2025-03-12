@@ -14,7 +14,7 @@ async function getMusicMetadata(trackId) {
       const songData = result.data[0];
       return {
         title: `${songData.name} - ${songData.artists.primary[0].name}`,
-        image: songData.image[1],
+        image: songData.image[1].url,
         ogType: "music.song",
       };
     }

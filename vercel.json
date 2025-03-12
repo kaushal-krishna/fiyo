@@ -1,19 +1,19 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/.*",
+      "source": "/(.*)",
       "has": [
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(bot|crawler|spider|crawling|archiver|facebookexternalhit|Twitterbot|WhatsApp|Slackbot|LinkedInBot|Googlebot|Pinterestbot|Discordbot|TelegramBot|Bingbot|Yahoo! Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|facebot|ia_archiver)"
+          "value": "(facebookexternalhit|Twitterbot|WhatsApp|Slackbot|LinkedInBot|Googlebot|Pinterestbot|Discordbot|TelegramBot|Bingbot|DuckDuckBot|Yahoo! Slurp|YandexBot|Baiduspider|Applebot|Facebot|ia_archiver|AhrefsBot|SemrushBot|DotBot|MJ12bot|PetalBot|Twitterbot|SiteAuditBot|SogouSpider|SeznamBot|Mediapartners-Google|Exabot|GPTBot|ClaudeBot|YouBot|Bytespider|CCBot|MetaInspector|Pinterestbot|Google-Read-Aloud|Google Favicon|Google Web Preview|AdsBot-Google|Yeti|Twitter AdsBot|Google-Safety|Google-Structured-Data-Testing-Tool|Google-Image|ViberBot|SkypeUriPreview|SkypeBot|SnapchatBot)"
         }
       ],
-      "dest": "/api/handler"
+      "destination": "/api/handler"
     },
     {
-      "src": "/.*",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

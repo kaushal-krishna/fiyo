@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import UserContext from "../../context/items/UserContext";
-import fiyoAxios from "../../utils/fiyoAxios.js";
-import { fiyoauthApiBaseUri } from "../../constants.js";
+import { REGISTER_USER } from "../../graphql/fiyouser/auth.ops.js";
 
 const Signup = () => {
   document.title = "Flexiyo";
 
-  const { isUserAuthenticated, saveUserInfo } =
-    useContext(UserContext);
+  const { isUserAuthenticated, saveUserInfo } = useContext(UserContext);
   const [alertText, setAlertText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
@@ -22,14 +21,13 @@ const Signup = () => {
     }
   }, [isUserAuthenticated, navigate]);
 
-  // Step-specific validation schemas
   const Step1Schema = Yup.object().shape({
-    fullName: Yup.string().required("Full Name is required"),
+    full_name: Yup.string().required("Full Name is required"),
     username: Yup.string().required("Username is required"),
   });
 
   const Step2Schema = Yup.object().shape({
-    fullName: Yup.string().required("Full Name is required"),
+    full_name: Yup.string().required("Full Name is required"),
     username: Yup.string().required("Username is required"),
     dob: Yup.date()
       .required("Date of Birth is required")
@@ -40,7 +38,7 @@ const Signup = () => {
   });
 
   const Step3Schema = Yup.object().shape({
-    fullName: Yup.string().required("Full Name is required"),
+    full_name: Yup.string().required("Full Name is required"),
     username: Yup.string().required("Username is required"),
     dob: Yup.date()
       .required("Date of Birth is required")
@@ -51,19 +49,19 @@ const Signup = () => {
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
-    confirmPassword: Yup.string()
+    confirm_password: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm Password is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      fullName: "",
+      full_name: "",
       username: "",
       dob: "",
       account_type: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
     },
     validationSchema:
       step === 1 ? Step1Schema : step === 2 ? Step2Schema : Step3Schema,
@@ -73,45 +71,34 @@ const Signup = () => {
       } else if (step === 2) {
         setStep(3);
       } else {
-        handleSignupUser(values);
+        handleRegisterUser(values);
       }
     },
   });
 
-  const handleSignupUser = async (values) => {
+  const [registerUser] = useMutation(REGISTER_USER);
+
+  const handleRegisterUser = async (values) => {
     setIsLoading(true);
     setAlertText("");
     try {
-      const deviceName = navigator.userAgent.split(" ")[0] || "Unknown";
-      const response = await fiyoAxios.post(
-        `${fiyoauthApiBaseUri}/users/register`,
-        {
-          full_name: values.fullName,
-          username: values.username,
-          dob: values.dob,
-          account_type: values.account_type,
-          password: values.password,
-          device_name: deviceName,
-        }
-      );
+      const device_name = navigator.userAgent.split(" ")[0] || "Unknown";
 
-      if (!response?.data?.data) {
-        throw new Error("Invalid response structure from server");
-      }
-
-      const userData = {
-        id: response.data.data.id,
-        username: response.data.data.username,
-        avatar: response.data.data.avatar,
-        headers: {
-          fiyort: response.data.data.headers?.fiyort,
-          fiyoat: response.data.data.headers?.fiyoat,
-          fiyodid: response.data.data.headers?.fiyodid,
+      const { data } = await registerUser({
+        variables: {
+          input: {
+            ...values,
+            device_name,
+          },
         },
-      };
+      });
+
+      if (!data.status.success) return;
+
+      const userData = data.user;
       saveUserInfo(userData);
-      localStorage.setItem("userInfo", JSON.stringify(userData));
       setIsLoading(false);
+
       navigate("/", { state: { from: "/auth/signup" }, replace: true });
     } catch (error) {
       console.error("Signup Error:", error);
@@ -168,20 +155,20 @@ const Signup = () => {
                 <div>
                   <input
                     type="text"
-                    name="fullName"
+                    name="full_name"
                     placeholder="Full Name"
                     className={`w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-2 ${
-                      formik.touched.fullName && formik.errors.fullName
+                      formik.touched.full_name && formik.errors.full_name
                         ? "border-red-500"
                         : "border-gray-200 dark:border-gray-600"
                     } focus:outline-none focus:border-indigo-500 transition-all rounded-lg lg:rounded-xl`}
-                    value={formik.values.fullName}
+                    value={formik.values.full_name}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.touched.fullName && formik.errors.fullName && (
+                  {formik.touched.full_name && formik.errors.full_name && (
                     <p className="mt-1 text-sm text-red-500">
-                      {formik.errors.fullName}
+                      {formik.errors.full_name}
                     </p>
                   )}
                 </div>
@@ -287,22 +274,22 @@ const Signup = () => {
                 <div>
                   <input
                     type="password"
-                    name="confirmPassword"
+                    name="confirm_password"
                     placeholder="Confirm Password"
                     className={`w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-2 ${
-                      formik.touched.confirmPassword &&
-                      formik.errors.confirmPassword
+                      formik.touched.confirm_password &&
+                      formik.errors.confirm_password
                         ? "border-red-500"
                         : "border-gray-200 dark:border-gray-600"
                     } focus:outline-none focus:border-indigo-500 transition-all rounded-lg lg:rounded-xl`}
-                    value={formik.values.confirmPassword}
+                    value={formik.values.confirm_password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.touched.confirmPassword &&
-                    formik.errors.confirmPassword && (
+                  {formik.touched.confirm_password &&
+                    formik.errors.confirm_password && (
                       <p className="mt-1 text-sm text-red-500">
-                        {formik.errors.confirmPassword}
+                        {formik.errors.confirm_password}
                       </p>
                     )}
                 </div>

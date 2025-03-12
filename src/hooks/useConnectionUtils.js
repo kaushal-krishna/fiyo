@@ -1,86 +1,62 @@
-import fiyoAxios from "../utils/fiyoAxios.js";
-import { fiyoauthApiBaseUri } from "../constants.js";
+import client from "../utils/apolloClient.js";
+import * as ops from "../graphql/fiyouser/connection.ops.js";
 
-const makeApiRequest = async (method, endpoint, reqBody = null) => {
+/** Generic Query Handler */
+const executeQuery = async (type, queryDoc, variables = {}) => {
   try {
-    const config = method === "get" ? { params: reqBody } : reqBody;
-    const { data } = await fiyoAxios[method](
-      `${fiyoauthApiBaseUri}/${endpoint}`,
-      config,
-    );
-    return data.data;
+    const { data } = await client[type]({
+      [type === "query" ? "query" : "mutation"]: queryDoc,
+      variables,
+      fetchPolicy: type === "query" ? "network-only" : undefined,
+    });
+    return data?.[Object.keys(data)[0]];
   } catch (error) {
-    console.error(`Error in ${endpoint}:`, error?.response?.data || error);
+    console.error(
+      `GraphQL ${type.toUpperCase()} Error in ${
+        queryDoc.definitions[0].name.value
+      }:`,
+      error
+    );
     return null;
   }
 };
 
-const getUserFollowers = (userId, limit = 20, offset = 0) =>
-  makeApiRequest("get", `connections/followers/${userId}`, { limit, offset });
+/** Query Functions */
+export const getUserFollowers = (user_id, offset = 0) =>
+  executeQuery("query", ops.GET_USER_FOLLOWERS, { user_id, offset });
 
-const getUserFollowing = (userId, limit = 20, offset = 0) =>
-  makeApiRequest("get", `connections/following/${userId}`, { limit, offset });
+export const getUserFollowing = (user_id, offset = 0) =>
+  executeQuery("query", ops.GET_USER_FOLLOWING, { user_id, offset });
 
-const getPendingFollowRequests = () =>
-  makeApiRequest("get", "connections/pending/follow_requests");
+export const getPendingFollowRequests = () =>
+  executeQuery("query", ops.GET_PENDING_FOLLOW_REQUESTS);
 
-const sendFollowRequest = (followingId) =>
-  makeApiRequest("post", "connections/send/follow_request", {
-    following_id: followingId,
-  });
+export const getUserMates = () => executeQuery("query", ops.GET_USER_MATES);
 
-const unsendFollowRequest = (followingId) =>
-  makeApiRequest("post", "connections/unsend/follow_request", {
-    following_id: followingId,
-  });
+export const getPendingMateRequests = () =>
+  executeQuery("query", ops.GET_PENDING_MATE_REQUESTS);
 
-const acceptFollowRequest = (followerId) =>
-  makeApiRequest("post", "connections/accept/follow_request", {
-    follower_id: followerId,
-  });
+/** Mutation Functions */
+export const sendFollowRequest = (user_id) =>
+  executeQuery("mutate", ops.SEND_FOLLOW_REQUEST, { user_id });
 
-const rejectFollowRequest = (followerId) =>
-  makeApiRequest("post", "connections/reject/follow_request", {
-    follower_id: followerId,
-  });
+export const unsendFollowRequest = (user_id) =>
+  executeQuery("mutate", ops.UNSEND_FOLLOW_REQUEST, { user_id });
 
-const getUserMates = () => makeApiRequest("get", "connections/mates");
+export const acceptFollowRequest = (user_id) =>
+  executeQuery("mutate", ops.ACCEPT_FOLLOW_REQUEST, { user_id });
 
-const getPendingMateRequests = () =>
-  makeApiRequest("get", "connections/pending/mate_requests");
+export const rejectFollowRequest = (user_id) =>
+  executeQuery("mutate", ops.REJECT_FOLLOW_REQUEST, { user_id });
 
-const sendMateRequest = (initiatorId) =>
-  makeApiRequest("post", "connections/send/mate_request", {
-    mate_id: initiatorId,
-  });
+export const sendMateRequest = (user_id) =>
+  executeQuery("mutate", ops.SEND_MATE_REQUEST, { user_id });
 
-const unsendMateRequest = (initiatorId) =>
-  makeApiRequest("post", "connections/unsend/mate_request", {
-    mate_id: initiatorId,
-  });
+export const unsendMateRequest = (user_id) =>
+  executeQuery("mutate", ops.UNSEND_MATE_REQUEST, { user_id });
 
-const acceptMateRequest = (initiatorId) =>
-  makeApiRequest("post", "connections/accept/mate_request", {
-    initiator_id: initiatorId,
-  });
+export const acceptMateRequest = (user_id) =>
+  executeQuery("mutate", ops.ACCEPT_MATE_REQUEST, { user_id });
 
-const rejectMateRequest = (initiatorId) =>
-  makeApiRequest("post", "connections/reject/mate_request", {
-    initiator_id: initiatorId,
-  });
-
-export {
-  getUserFollowers,
-  getUserFollowing,
-  getPendingFollowRequests,
-  sendFollowRequest,
-  unsendFollowRequest,
-  acceptFollowRequest,
-  rejectFollowRequest,
-  getUserMates,
-  getPendingMateRequests,
-  sendMateRequest,
-  unsendMateRequest,
-  acceptMateRequest,
-  rejectMateRequest,
-};
+export const rejectMateRequest = (user_id) =>
+  executeQuery("mutate", ops.REJECT_MATE_REQUEST, { user_id });

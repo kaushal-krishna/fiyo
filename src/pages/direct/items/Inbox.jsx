@@ -1,10 +1,8 @@
 import React, { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { fiyochatSrvBaseUri } from "../../../constants.js";
-import { getAllUsers } from "../../../hooks/useUserUtils.js";
+import { getUsers } from "../../../hooks/useUserUtils.js";
 import SocketContext from "../../../context/items/SocketContext";
 import UserContext from "../../../context/items/UserContext";
-import fiyoAxios from "../../../utils/fiyoAxios.js";
 import CustomTopNav from "../../../layout/items/CustomTopNav";
 import LongPressable from "../../../components/app/events/LongPressable";
 import DialogBox from "../../../components/app/DialogBox";
@@ -22,10 +20,10 @@ const Inbox = () => {
 
   const createChatRoom = async (memberIds) => {
     try {
-      const { data } = await fiyoAxios.post(
-        `${fiyochatSrvBaseUri}/api/v1/rooms/create`,
-        { roomType: "private", memberIds }
-      );
+      // const { data } = await fiyoAxios.post(
+      //   `${fiyochatSrvBaseUri}/api/v1/rooms/create`,
+      //   { roomType: "private", memberIds }
+      // );
       setIsCreateRoomModalOpen(false);
       window.location.replace(`/direct/t/${data.data.roomId}`);
     } catch (error) {
@@ -35,7 +33,7 @@ const Inbox = () => {
 
   const deleteChatRoom = async () => {
     try {
-      await fiyoAxios.delete(`${fiyochatSrvBaseUri}/api/v1/rooms/delete`);
+      // await fiyoAxios.delete(`${fiyochatSrvBaseUri}/api/v1/rooms/delete`);
       navigate("/direct/inbox");
       setIsCreateRoomModalOpen(false);
     } catch (error) {
@@ -84,7 +82,7 @@ const Inbox = () => {
 
   const openCreateRoomModal = () => {
     setIsCreateRoomModalOpen(true);
-    getAllUsers().then((users) => {
+    getUsers().then((users) => {
       setUsersList(users);
     });
   };

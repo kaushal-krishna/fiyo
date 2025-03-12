@@ -1,68 +1,41 @@
-import { fiyoauthApiBaseUri } from "../constants.js";
-import fiyoAxios from "../utils/fiyoAxios.js";
+import client from "../utils/apolloClient.js";
+import * as ops from "../graphql/fiyouser/user.ops.js";
 
-export const getAllUsers = async () => {
+/** Generic Query Handler */
+const executeQuery = async (type, queryDoc, variables = {}) => {
   try {
-    const { data } = await fiyoAxios.get(`${fiyoauthApiBaseUri}/users`);
-    return data.data;
-  } catch (error) {
-    console.error(`Error in getAllUsers: ${error}`);
-  }
-};
-
-export const getUser = async username => {
-  try {
-    const { data } = await fiyoAxios.get(
-      `${fiyoauthApiBaseUri}/users/profile/${username}`,
-    );
-    return data.data;
-  } catch (error) {
-    console.error(`Error in getUser: ${error}`);
-    return error;
-  }
-};
-
-export const updateUser = async (userId, userData) => {
-  try {
-    const { data } = await fiyoAxios.put(
-      `${fiyoauthApiBaseUri}/users/update/${userId}`,
-      userData,
-    );
-    return data.data;
-  } catch (error) {
-    console.error(`Error in updateUser: ${error}`);
-  }
-};
-
-export const deleteUser = async userId => {
-  try {
-    const { data } = await fiyoAxios.delete(
-      `${fiyoauthApiBaseUri}/users/delete/${userId}`,
-    );
-    return data.data;
-  } catch (error) {
-    console.error(`Error in deleteUser: ${error}`);
-  }
-};
-
-export const getBulkUsers = async userIds => {
-  try {
-    const { data } = await fiyoAxios.post(`${fiyoauthApiBaseUri}/users/bulk`, {
-      userIds,
+    const { data } = await client[type]({
+      [type === "query" ? "query" : "mutation"]: queryDoc,
+      variables,
+      fetchPolicy: type === "query" ? "network-only" : undefined,
     });
-    return data.data;
+    return data?.[Object.keys(data)[0]];
   } catch (error) {
-    console.error(`Error in getBulkUsers: ${error}`);
+    console.error(
+      `GraphQL ${type.toUpperCase()} Error in ${
+        queryDoc.definitions[0].name.value
+      }:`,
+      error
+    );
+    return null;
   }
 };
 
-export const searchUsers = async searchText => {
-  try {
-    const { data } = await fiyoAxios.get(
-      `${fiyoauthApiBaseUri}/users/search/${searchText}`,
-    );
-    return data.data;
-  } catch (error) {
-    console.error(`Error in searchUsers: ${error}`);
-  }
-};
+/** Query Functions */
+export const getUsers = (user_ids = [], offset = 0) =>
+  executeQuery("query", ops.GET_USERS, { user_ids, offset });
+
+export const searchUsers = (query) =>
+  executeQuery("query", ops.SEARCH_USERS, { query });
+
+export const getBasicUser = (username) =>
+  executeQuery("query", ops.GET_BASIC_USER, { username });
+
+export const getUser = (username) =>
+  executeQuery("query", ops.GET_USER, { username });
+
+/** Mutation Functions */
+export const updateUser = (updated_fields) =>
+  executeQuery("mutate", ops.UPDATE_USER, { updated_fields });
+
+export const deleteUser = () => executeQuery("mutate", ops.DELETE_USER);

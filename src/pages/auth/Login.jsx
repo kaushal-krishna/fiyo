@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import fiyoAxios from "../../utils/fiyoAxios.js";
-import * as Yup from "yup";
+import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import UserContext from "../../context/items/UserContext";
-import { fiyoauthApiBaseUri } from "../../constants.js";
+import { LOGIN_USER } from "../../graphql/fiyouser/auth.ops.js";
 
 const Login = () => {
   const { isUserAuthenticated, saveUserInfo } = useContext(UserContext);
@@ -36,46 +36,28 @@ const Login = () => {
     }
   }, [isUserAuthenticated, navigate]);
 
+  const [loginUser] = useMutation(LOGIN_USER);
+
   const handleLoginUser = async (values) => {
     setIsLoading(true);
     setAlertText("");
     try {
-      const deviceName = navigator.userAgent.split(" ")[0] || "Unknown";
-      const response = await fiyoAxios.post(
-        `${fiyoauthApiBaseUri}/users/login`,
-        {
-          username: values.username,
-          password: values.password,
-          device_name: deviceName,
-        },
-        { withCredentials: false }
-      );
+      const device_name = navigator.userAgent.split(" ")[0] || "Unknown";
 
-      if (!response?.data?.success || !response?.data?.data) {
-        throw new Error("Invalid response structure from server");
-      }
+      const { data } = await loginUser({
+        variables: { input: { ...values, device_name } },
+      });
 
-      const userData = {
-        id: response.data.data.id,
-        username: response.data.data.username,
-        avatar: response.data.data.avatar,
-        headers: {
-          fiyort: response.data.data.headers.fiyort,
-          fiyoat: response.data.data.headers.fiyoat,
-          fiyodid: response.data.data.headers.fiyodid,
-        },
-      };
+      if (!data?.status?.success) return;
+
+      const userData = data.user;
       saveUserInfo(userData);
-      localStorage.setItem("userInfo", JSON.stringify(userData));
       setIsLoading(false);
+
       navigate("/", { state: { from: "/auth/login" }, replace: true });
     } catch (error) {
       console.error("Login Error:", error);
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Something went wrong";
-      setAlertText(errorMessage);
+    } finally {
       setIsLoading(false);
     }
   };

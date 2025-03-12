@@ -27,26 +27,27 @@ const Profile = () => {
   useEffect(() => {
     setLoading(true);
     getUser(username)
-      .then((userData) => {
-        if (userData?.status === 404) {
-          setUser(null);
-        } else {
-          setUser(userData);
-          setFollowBtnText(
-            userData?.relation?.follow?.follow_status === "accepted"
-              ? "Following"
-              : userData?.relation?.follow?.follow_status === "pending"
-              ? "Requested"
-              : "Follow"
-          );
-          setMateBtnText(
-            userData?.relation?.follow?.mate_status === "accepted"
-              ? "Already Mates"
-              : userData?.relation?.follow?.mate_status === "pending"
-              ? "Requested"
-              : "Commate"
-          );
-        }
+      .then((response) => {
+        if(!response.status.success) return;
+
+        const userData = response.user;
+        setUser(userData);
+        if (!userData.relation) return;
+
+        setFollowBtnText(
+          userData?.relation?.follow?.follow_status === "accepted"
+            ? "Following"
+            : userData?.relation?.follow?.follow_status === "pending"
+            ? "Requested"
+            : "Follow"
+        );
+        setMateBtnText(
+          userData?.relation?.mate?.mate_status === "accepted"
+            ? "Already Mates"
+            : userData?.relation?.mate?.mate_status === "pending"
+            ? "Requested"
+            : "Commate"
+        );
         setLoading(false);
       })
       .catch((error) => {

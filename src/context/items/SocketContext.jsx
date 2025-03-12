@@ -5,9 +5,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { fiyochatSrvBaseUri } from "../../constants.js";
 import UserContext from "./UserContext";
-import { getBulkUsers } from "../../hooks/useUserUtils.js";
+import { getUsers } from "../../hooks/useUserUtils.js";
 import { refreshAccessToken } from "../../hooks/useTokenUtils.js";
 import {
   initializeMessageStock,
@@ -34,7 +33,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (isUserAuthenticated && !socketRef.current) {
       console.log("Creating new socket connection");
-      socketRef.current = io(fiyochatSrvBaseUri, {
+      socketRef.current = io("fiyochatSrvBaseUri", {
         withCredentials: true,
         transports: ["websocket"],
         auth: {
@@ -83,7 +82,7 @@ export const SocketProvider = ({ children }) => {
               .map((member) => member)
           );
 
-          const recipientUsers = await getBulkUsers(recipientUserIds);
+          const recipientUsers = await getUsers(recipientUserIds);
 
           inboxItems.forEach((item) => {
             item.recipientUser = recipientUsers.find(

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import axios from "axios";
 import AppContext from "../context/items/AppContext.jsx";
-import { fiyosaavnApiBaseUri } from "../constants.js";
+import { FIYOSAAVN_BASE_URI } from "../constants.js";
 
 const useMusicUtils = ({
   currentTrack,
@@ -25,7 +25,7 @@ const useMusicUtils = ({
               clientVersion: "1.2025011",
             },
           },
-        },
+        }
       );
 
       delete data?.responseContext;
@@ -57,7 +57,7 @@ const useMusicUtils = ({
   const getTrackData = async (trackId) => {
     try {
       const { data } = await axios.get(
-        `${fiyosaavnApiBaseUri}/songs/${trackId}`,
+        `${FIYOSAAVN_BASE_URI}/songs/${trackId}`
       );
       const resultData = data.data[0];
 
@@ -95,7 +95,7 @@ const useMusicUtils = ({
         const updatedData = {
           ...parsedData,
           ...Object.fromEntries(
-            Object.entries(trackData).filter(([key, value]) => value !== null),
+            Object.entries(trackData).filter(([key, value]) => value !== null)
           ),
         };
         localStorage.setItem(trackKey, JSON.stringify(updatedData));
@@ -143,13 +143,13 @@ const useMusicUtils = ({
           const { data } = await axios.get(
             `https://lyrist.vercel.app/api/${trackData.name}/${trackData.artists
               ?.split(",")[0]
-              .trim()}`,
+              .trim()}`
           );
           if (data?.lyrics) return data;
           console.error("Lyrist API failed to fetch lyrics");
         } catch (error) {
           const { data } = await axios.get(
-            `${fiyosaavnApiBaseUri}/songs/${trackData.id}/lyrics`,
+            `${FIYOSAAVN_BASE_URI}/songs/${trackData.id}/lyrics`
           );
           return data.data;
         }
@@ -186,13 +186,13 @@ const useMusicUtils = ({
         ? (await getTracksFromDB()).map((track) => track.id)
         : (
             await axios.get(
-              `${fiyosaavnApiBaseUri}/songs/${currentTrack.id}/suggestions`,
-              { params: { limit: 5 } },
+              `${FIYOSAAVN_BASE_URI}/songs/${currentTrack.id}/suggestions`,
+              { params: { limit: 5 } }
             )
           ).data.data.map((item) => item.id);
 
       const availableTracks = suggestedTrackIds.filter(
-        (id) => !previouslyPlayedTracks.includes(id),
+        (id) => !previouslyPlayedTracks.includes(id)
       );
 
       if (availableTracks.length === 0) {

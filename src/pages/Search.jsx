@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Suggestions from "../components/app/Suggestions";
-import { fiyoauthApiBaseUri } from "../constants";
-import fiyoAxios from "../utils/fiyoAxios";
 import UserCard from "../components/app/UserCard";
+import { searchUsers } from "../hooks/useUserUtils";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,10 +15,8 @@ const Search = () => {
       const fetchSearchResults = async () => {
         setLoading(true);
         try {
-          const response = await fiyoAxios.get(
-            `${fiyoauthApiBaseUri}/users/search/${searchQuery}`
-          );
-          setSearchResults(response.data.data || []);
+          const response = await searchUsers(searchQuery);
+          setSearchResults(response?.users || []);
         } catch (error) {
           console.error("Search error:", error);
           setSearchResults([]);

@@ -1,5 +1,5 @@
 export const FIYOGQL_BASE_URI =
-  import.meta.env.PRESENT_ENV === "prod"
+  import.meta.env.NODE_ENV === "production"
     ? "https://fiyogql.onrender.com/graphql"
     : "http://localhost:8000/graphql";
 

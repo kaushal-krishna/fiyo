@@ -43,16 +43,18 @@ const Profile = () => {
         }
 
         setFollowBtnText(
-          userData?.relation?.follow?.follow_status === "accepted"
+          userData?.relation?.follow?.is_following
             ? "Following"
-            : userData?.relation?.follow?.follow_status === "pending"
+            : userData?.relation?.follow?.is_followed
+            ? "Follow Back"
+            : userData?.relation?.follow?.is_following === false
             ? "Requested"
             : "Follow"
         );
         setMateBtnText(
-          userData?.relation?.mate?.mate_status === "accepted"
+          userData?.relation?.mate?.are_mates
             ? "Already Mates"
-            : userData?.relation?.mate?.mate_status === "pending"
+            : userData?.relation?.mate?.are_mates === false
             ? "Requested"
             : "Commate"
         );

@@ -81,6 +81,15 @@ export const GET_USER = gql`
         posts_count
         followers_count
         following_count
+        relation {
+          follow {
+            is_following
+            is_followed
+          }
+          mate {
+            are_mates
+          }
+        }
       }
     }
   }

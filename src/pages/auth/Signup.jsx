@@ -29,23 +29,23 @@ const Signup = () => {
   const Step2Schema = Yup.object().shape({
     full_name: Yup.string().required("Full Name is required"),
     username: Yup.string().required("Username is required"),
-    dob: Yup.date()
-      .required("Date of Birth is required")
-      .max(new Date(), "Date of Birth cannot be in the future"),
     account_type: Yup.string()
       .required("Account Type is required")
       .oneOf(["personal", "creator", "business"], "Invalid account type"),
+    dob: Yup.date()
+      .required("Date of Birth is required")
+      .max(new Date(), "Date of Birth cannot be in the future"),
   });
 
   const Step3Schema = Yup.object().shape({
     full_name: Yup.string().required("Full Name is required"),
     username: Yup.string().required("Username is required"),
-    dob: Yup.date()
-      .required("Date of Birth is required")
-      .max(new Date(), "Date of Birth cannot be in the future"),
     account_type: Yup.string()
       .required("Account Type is required")
       .oneOf(["personal", "creator", "business"], "Invalid account type"),
+    dob: Yup.date()
+      .required("Date of Birth is required")
+      .max(new Date(), "Date of Birth cannot be in the future"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
@@ -58,8 +58,8 @@ const Signup = () => {
     initialValues: {
       full_name: "",
       username: "",
-      dob: "",
       account_type: "",
+      dob: "",
       password: "",
       confirm_password: "",
     },
@@ -71,6 +71,7 @@ const Signup = () => {
       } else if (step === 2) {
         setStep(3);
       } else {
+        delete values.confirm_password;
         handleRegisterUser(values);
       }
     },
@@ -95,11 +96,12 @@ const Signup = () => {
 
       const result = data.registerUser;
 
-      if (!result.status.success) return;
+      if (!result.status.success) {
+        setAlertText(result.status.message);
+        return;
+      }
 
       saveUserInfo(result);
-      setIsLoading(false);
-
       navigate("/", { state: { from: "/auth/signup" }, replace: true });
     } catch (error) {
       console.error("Signup Error:", error);
@@ -108,6 +110,7 @@ const Signup = () => {
         error.message ||
         "Something went wrong";
       setAlertText(errorMessage);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -200,27 +203,6 @@ const Signup = () => {
             {step === 2 && (
               <>
                 <div>
-                  <input
-                    type="date"
-                    name="dob"
-                    placeholder="Date of Birth"
-                    className={`w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-2 ${
-                      formik.touched.dob && formik.errors.dob
-                        ? "border-red-500"
-                        : "border-gray-200 dark:border-gray-600"
-                    } focus:outline-none focus:border-indigo-500 transition-all rounded-lg lg:rounded-xl`}
-                    value={formik.values.dob}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.touched.dob && formik.errors.dob && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {formik.errors.dob}
-                    </p>
-                  )}
-                </div>
-
-                <div>
                   <select
                     name="account_type"
                     className={`w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-2 ${
@@ -245,6 +227,27 @@ const Signup = () => {
                         {formik.errors.account_type}
                       </p>
                     )}
+                </div>
+
+                <div>
+                  <input
+                    type="date"
+                    name="dob"
+                    placeholder="Date of Birth"
+                    className={`w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-2 ${
+                      formik.touched.dob && formik.errors.dob
+                        ? "border-red-500"
+                        : "border-gray-200 dark:border-gray-600"
+                    } focus:outline-none focus:border-indigo-500 transition-all rounded-lg lg:rounded-xl`}
+                    value={formik.values.dob}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.dob && formik.errors.dob && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {formik.errors.dob}
+                    </p>
+                  )}
                 </div>
               </>
             )}

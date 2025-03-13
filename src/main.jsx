@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import ContextProviders from "./context/ContextProviders";
 import App from "./App";
-import { FIYOGQL_BASE_URI } from "./constants";
+import { FIYOGQL_BASE_URI } from "./constants.js";
 
 const client = new ApolloClient({
   uri: FIYOGQL_BASE_URI,

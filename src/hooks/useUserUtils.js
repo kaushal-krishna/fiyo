@@ -10,8 +10,6 @@ const executeQuery = async (type, queryDoc, variables = {}) => {
       fetchPolicy: type === "query" ? "network-only" : undefined,
     });
 
-    console.log(data);
-
     return data?.[Object.keys(data)[0]];
   } catch (error) {
     console.error(
@@ -24,10 +22,9 @@ const executeQuery = async (type, queryDoc, variables = {}) => {
   }
 };
 
-
 /** Query Functions */
-export const getUsers = (user_ids = [], offset = 0) =>
-  executeQuery("query", ops.GET_USERS, { user_ids, offset });
+export const getUsers = (user_ids = []) =>
+  executeQuery("query", ops.GET_USERS, { user_ids });
 
 export const searchUsers = (query) =>
   executeQuery("query", ops.SEARCH_USERS, { query });

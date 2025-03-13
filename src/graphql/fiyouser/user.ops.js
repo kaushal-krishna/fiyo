@@ -10,6 +10,7 @@ export const GET_USERS = gql`
       }
       users {
         id
+        full_name
         username
         avatar
       }
@@ -62,6 +63,10 @@ export const GET_USER = gql`
         id
         full_name
         username
+        account_type
+        dob
+        gender
+        profession
         bio {
           text
           links
@@ -71,10 +76,6 @@ export const GET_USER = gql`
             artist
           }
         }
-        account_type
-        dob
-        gender
-        profession
         avatar
         banner
         posts_count
@@ -96,6 +97,10 @@ export const UPDATE_USER = gql`
       user {
         full_name
         username
+        account_type
+        dob
+        gender
+        profession
         bio {
           text
           links
@@ -105,10 +110,6 @@ export const UPDATE_USER = gql`
             artist
           }
         }
-        account_type
-        dob
-        gender
-        profession
         avatar
         banner
       }

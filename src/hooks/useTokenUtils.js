@@ -9,14 +9,14 @@ const refreshAccessToken = async () => {
       query: REFRESH_ACCESS_TOKEN,
       context: {
         headers: {
-          refresh_token: userInfo?.headers?.access_token,
+          refresh_token: userInfo.headers.refresh_token,
         },
       },
       fetchPolicy: "no-cache",
     });
 
-    const response = data?.refreshAccessToken;
-    if (response?.status?.success) {
+    const response = data.refreshAccessToken;
+    if (response.status.success) {
       const updatedUserInfo = {
         ...userInfo,
         headers: {
@@ -28,14 +28,14 @@ const refreshAccessToken = async () => {
       };
 
       localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
-    } else if (response?.status?.message === "RTInvalidError") {
+    } else if (response.status.message === "RTInvalidError") {
+      window.location.href("/");
       localStorage.removeItem("userInfo");
-      window.location.reload();
     }
   } catch (error) {
     console.error("Token refresh failed:", error);
+    window.location.href("/");
     localStorage.removeItem("userInfo");
-    window.location.reload();
   }
 };
 

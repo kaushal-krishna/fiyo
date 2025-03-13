@@ -15,7 +15,7 @@ export const GET_USER_FOLLOWERS = gql`
         avatar
         relation {
           follow {
-            follow_status
+            is_following
             is_followed
           }
         }
@@ -38,7 +38,7 @@ export const GET_USER_FOLLOWING = gql`
         avatar
         relation {
           follow {
-            follow_status
+            is_following
             is_followed
           }
         }
@@ -78,7 +78,7 @@ export const GET_USER_MATES = gql`
         avatar
         relation {
           mate {
-            mate_status
+            are_mates
           }
         }
       }

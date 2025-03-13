@@ -37,8 +37,8 @@ export const SocketProvider = ({ children }) => {
         withCredentials: true,
         transports: ["websocket"],
         auth: {
-          fiyoat: userInfo?.headers?.fiyoat,
-          fiyodid: userInfo?.headers?.fiyodid,
+          access_token: userInfo?.headers?.access_token,
+          device_id: userInfo?.headers?.device_id,
         },
       });
 
@@ -58,7 +58,10 @@ export const SocketProvider = ({ children }) => {
                 return room;
               }
 
-              const lastLog = await getLastLog(room.messageStock, userInfo.id);
+              const lastLog = await getLastLog(
+                room.messageStock,
+                userInfo.user.id
+              );
 
               const existingMessageStocks = sessionMessageStocks || {};
 
@@ -78,7 +81,7 @@ export const SocketProvider = ({ children }) => {
 
           const recipientUserIds = response.flatMap((room) =>
             room.roomDetails.members
-              .filter((member) => member !== userInfo.id)
+              .filter((member) => member !== userInfo.user.id)
               .map((member) => member)
           );
 
@@ -88,7 +91,7 @@ export const SocketProvider = ({ children }) => {
             item.recipientUser = recipientUsers.find(
               (user) =>
                 item.roomDetails.members.includes(user.id) &&
-                user.id !== userInfo.id
+                user.id !== userInfo.user.id
             );
           });
 
@@ -110,7 +113,7 @@ export const SocketProvider = ({ children }) => {
 
           const updatedStock = updateMessageStocks(roomId, messageStock);
 
-          const lastLog = await getLastLog(updatedStock, userInfo.id);
+          const lastLog = await getLastLog(updatedStock, userInfo.user.id);
           setInboxItems((prev) =>
             prev.map((item) =>
               item?.roomDetails?.id === roomId ? { ...item, lastLog } : item
@@ -140,7 +143,7 @@ export const SocketProvider = ({ children }) => {
 
           const updatedStock = updateMessageStocks(roomId, messageStock);
 
-          const lastLog = await getLastLog(updatedStock, userInfo.id);
+          const lastLog = await getLastLog(updatedStock, userInfo.user.id);
           setInboxItems((prev) =>
             prev.map((item) =>
               item?.roomDetails?.id === roomId ? { ...item, lastLog } : item

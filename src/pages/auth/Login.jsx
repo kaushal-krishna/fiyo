@@ -49,8 +49,11 @@ const Login = () => {
       });
 
       const result = data.loginUser;
-      
-      if (!result.status.success) return;
+
+      if (!result.status.success) {
+        setAlertText(result.status.message);
+        return;
+      }
 
       saveUserInfo(result);
       setIsLoading(false);

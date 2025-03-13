@@ -28,11 +28,19 @@ const Profile = () => {
     setLoading(true);
     getUser(username)
       .then((response) => {
-        if (!response.status.success) return;
+        if (!response.status.success) {
+          setUser(null);
+          return;
+        }
 
         const userData = response.user;
         setUser(userData);
-        if (!userData.relation) return;
+
+        if (!userData.relation) {
+          setFollowBtnText("Follow");
+          setMateBtnText("Commate");
+          return;
+        }
 
         setFollowBtnText(
           userData?.relation?.follow?.follow_status === "accepted"
@@ -48,11 +56,12 @@ const Profile = () => {
             ? "Requested"
             : "Commate"
         );
-        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
         setUser(null);
+      })
+      .finally(() => {
         setLoading(false);
       });
 
@@ -117,7 +126,7 @@ const Profile = () => {
             />
             <img
               src={user?.banner}
-              className="w-full h-40 rounded-b-xl object-cover bg-primary-bg dark:bg-primary-bg-dark"
+              className="w-full h-40 object-cover bg-primary-bg dark:bg-primary-bg-dark"
               alt="Profile Banner"
             />
             <div className="w-full max-w-2xl mx-auto px-6">

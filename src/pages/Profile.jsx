@@ -73,7 +73,7 @@ const Profile = () => {
   }, [username]);
 
   const handleFollowBtnClick = () => {
-    followBtnText === "Follow"
+    ["Follow", "Follow Back"].includes(followBtnText)
       ? sendFollowRequest(user?.id).then(() => setFollowBtnText("Requested"))
       : unsendFollowRequest(user?.id).then(() => setFollowBtnText("Follow"));
   };
@@ -189,7 +189,7 @@ const Profile = () => {
                     ) : (
                       <button
                         className={`flex-1 rounded-full py-2 text-sm text-center text-white ${
-                          followBtnText === "Follow"
+                          ["Follow", "Follow Back"].includes(followBtnText)
                             ? "bg-blue-500 hover:bg-blue-600"
                             : "bg-tertiary-bg dark:bg-tertiary-bg-dark hover:bg-quaternary-bg dark:hover:bg-quaternary-bg-dark"
                         } cursor-pointer transition`}

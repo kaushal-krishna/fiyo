@@ -9,6 +9,7 @@ import {
   Search,
   Music,
   ChatStack,
+  Clips,
   Profile,
   AuthLogin,
   AuthSignup,
@@ -30,6 +31,7 @@ function App() {
       <Route path="/music" element={<Music />} />
       <Route path="/direct/t/:roomId" element={<ChatStack />} />
       <Route path="/direct/inbox" element={<ChatStack />} />
+      <Route path="/clips" element={<Clips />} />
       <Route path="/u/:username" element={<Profile />} />
     </>
   );
@@ -39,6 +41,8 @@ function App() {
       <Route path="*" element={<AuthLogin />} />
       <Route path="/auth/login" element={<AuthLogin />} />
       <Route path="/auth/signup" element={<AuthSignup />} />
+      <Route path="/music" element={<Music />} />
+      <Route path="/clips" element={<Clips />} />
       <Route path="/u/:username" element={<Profile />} />
     </>
   );

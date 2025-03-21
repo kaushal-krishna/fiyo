@@ -81,7 +81,7 @@ const Create = () => {
 
   return (
     <div className="flex justify-center mx-auto w-full min-h-screen md:p-6 bg-body-bg dark:bg-body-bg-dark">
-      <div className="flex flex-col lg:flex-row max-w-7xl w-full gap-4 md:gap-6 h-[calc(100vh-1rem)] md:h-[calc(100vh-3rem)]">
+      <div className="flex flex-col lg:flex-row max-w-7xl w-full gap-4 md:gap-6 lg:h-[calc(100vh-3rem)] h-screen">
         {/* Left Section - Preview */}
         <div className="flex-1 lg:w-1/2 lg:h-full h-1/3 w-full flex flex-col">
           <div className="flex flex-col h-full">

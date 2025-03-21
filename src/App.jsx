@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import AppContext from "./context/items/AppContext";
 import UserContext from "./context/items/UserContext";
 import LoadingScreen from "./components/app/LoadingScreen";
@@ -49,10 +49,23 @@ function App() {
     </>
   );
 
+  const noBottomNavRoutes = [
+    "/create",
+    "/direct/inbox",
+    "/direct/t/:id",
+    "/notifications",
+  ];
+
   return (
     <div className="flex min-h-screen bg-body-bg dark:bg-body-bg-dark text-black dark:text-white">
       {isUserAuthenticated && <NavStack />}
-      <main className="w-full max-w-7xl mx-auto md:px-6 pb-12 md:pb-0">
+      <main
+        className={`w-full max-w-7xl mx-auto md:px-6 ${
+          noBottomNavRoutes.includes(useLocation().pathname)
+            ? "pb-0"
+            : "pb-12 md:pb-0"
+        }`}
+      >
         <Routes>
           {isUserAuthenticated ? authenticatedRoutes : unauthenticatedRoutes}
           <Route path="*" element={<NotFound404 />} />

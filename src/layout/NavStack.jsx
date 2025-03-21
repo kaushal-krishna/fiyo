@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import SideNav from "./items/SideNav";
 import BottomNav from "./items/BottomNav";
 
@@ -26,7 +27,7 @@ const NavStack = () => {
   return (
     <>
       {isMobile ? (
-        !noBottomNavRoutes.includes(window.location.pathname) && <BottomNav />
+        !noBottomNavRoutes.includes(useLocation().pathname) && <BottomNav />
       ) : (
         <SideNav />
       )}

@@ -22,7 +22,8 @@ const SelectMedia = ({ onMediaSelect, selectedType }) => {
             Click to upload or drag and drop
           </span>
           <span className="text-sm text-primary-text dark:text-primary-text-dark opacity-60">
-            Clips only support {selectedType === "Post" ? "images" : "videos"}
+            {selectedType === "Post" ? "Posts" : "Clips"} only support{" "}
+            {selectedType === "Post" ? "images" : "videos"}
           </span>
           <input
             type="file"

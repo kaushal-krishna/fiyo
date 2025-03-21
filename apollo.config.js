@@ -1,4 +1,4 @@
-import { FIYOGQL_BASE_URI } from "./src/constants";
+import { FIYOGQL_BASE_URI } from "./src/constants.js";
 
 export default {
   client: {

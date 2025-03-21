@@ -97,7 +97,7 @@ export const GET_USER = gql`
 
 /** Mutations */
 export const UPDATE_USER = gql`
-  mutation UpdateUser($updated_fields: UpdatedFieldsInput!) {
+  mutation UpdateUser($updated_fields: UpdateUserInput!) {
     updateUser(updated_fields: $updated_fields) {
       status {
         success

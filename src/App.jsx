@@ -14,6 +14,7 @@ import {
   AuthLogin,
   AuthSignup,
   NotFound404,
+  Create,
 } from "./pages";
 
 function App() {
@@ -28,11 +29,12 @@ function App() {
     <>
       <Route path="/" element={<Home />} />
       <Route path="/search" element={<Search />} />
-      <Route path="/music" element={<Music />} />
-      <Route path="/direct/t/:roomId" element={<ChatStack />} />
-      <Route path="/direct/inbox" element={<ChatStack />} />
       <Route path="/clips" element={<Clips />} />
       <Route path="/u/:username" element={<Profile />} />
+      <Route path="/music" element={<Music />} />
+      <Route path="/create" element={<Create />} />
+      <Route path="/direct/t/:roomId" element={<ChatStack />} />
+      <Route path="/direct/inbox" element={<ChatStack />} />
     </>
   );
 

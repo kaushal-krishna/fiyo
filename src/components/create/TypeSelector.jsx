@@ -14,7 +14,7 @@ const TypeSelector = ({ selectedType, setSelectedType }) => {
     <div className="relative w-40">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full px-4 py-2 bg-primary-bg dark:bg-primary-bg-dark rounded-lg hover:bg-secondary-bg dark:hover:bg-secondary-bg-dark transition-colors text-primary-text dark:text-primary-text-dark shadow-sm"
+        className="flex items-center justify-between w-full px-4 py-2 bg-secondary-bg dark:bg-secondary-bg-dark rounded-lg hover:bg-tertiary-bg dark:hover:bg-tertiary-bg-dark transition-colors text-primary-text dark:text-primary-text-dark shadow-sm cursor-pointer"
       >
         <span className="font-medium">{selectedType}</span>
         <ChevronDown
@@ -29,7 +29,7 @@ const TypeSelector = ({ selectedType, setSelectedType }) => {
           {types.map((type) => (
             <button
               key={type}
-              className="w-full px-4 py-2 text-left hover:bg-secondary-bg dark:hover:bg-secondary-bg-dark transition-colors text-primary-text dark:text-primary-text-dark"
+              className="w-full px-4 py-2 text-left hover:bg-secondary-bg dark:hover:bg-secondary-bg-dark transition-colors text-primary-text dark:text-primary-text-dark cursor-pointer"
               onClick={() => handleSelect(type)}
             >
               {type}

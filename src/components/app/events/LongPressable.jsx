@@ -8,7 +8,7 @@ const LongPressable = ({ children, onLongPress, longPressDuration = 500 }) => {
     setIsPressing(true);
     timeoutRef.current = setTimeout(() => {
       if (onLongPress) {
-        onLongPress(event); // Call the provided callback with the event
+        onLongPress(event);
       }
       setIsPressing(false);
     }, longPressDuration);
@@ -30,9 +30,9 @@ const LongPressable = ({ children, onLongPress, longPressDuration = 500 }) => {
       onTouchEnd={stopLongPress}
       onTouchCancel={stopLongPress}
       style={{
-        userSelect: "none", // Prevents text selection during long press
-        background: isPressing ? "#f0f0f0" : "transparent", // Optional visual feedback
-        display: "inline-block", // Ensures it wraps content properly
+        userSelect: "none",
+        background: isPressing ? "#f0f0f0" : "transparent",
+        display: "inline-block",
       }}
     >
       {children}

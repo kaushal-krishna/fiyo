@@ -109,7 +109,7 @@ const getFilterStyle = (customSettings) => {
 const FiltersTab = ({ filters, selectedFilter, onFilterSelect, mediaUrl }) => (
   <div className="space-y-4">
     {/* Filters Grid */}
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4">
+    <div className="grid grid-cols-4 gap-3 p-4">
       {filters.map((filter) => (
         <div key={filter.name} className="flex flex-col items-center">
           <button
@@ -171,35 +171,11 @@ const AdjustTab = ({ imageSettings, onSliderChange }) => (
           default: 100,
         },
         {
-          name: "Temperature",
-          key: "temperature",
-          min: -100,
-          max: 100,
-          step: 1,
-          default: 0,
-        },
-        {
           name: "Blur",
           key: "blur",
           min: 0,
-          max: 10,
+          max: 5,
           step: 0.1,
-          default: 0,
-        },
-        {
-          name: "Grayscale",
-          key: "grayscale",
-          min: 0,
-          max: 100,
-          step: 1,
-          default: 0,
-        },
-        {
-          name: "Sepia",
-          key: "sepia",
-          min: 0,
-          max: 100,
-          step: 1,
           default: 0,
         },
       ].map((adjustment) => (
@@ -248,52 +224,6 @@ const RotateTab = ({ rotation, onRotationChange }) => (
   </div>
 );
 
-const EffectsTab = ({ imageSettings, onSliderChange }) => (
-  <div className="space-y-4">
-    <div className="space-y-6 p-4">
-      {[
-        {
-          name: "Vignette",
-          key: "vignette",
-          min: 0,
-          max: 100,
-          step: 1,
-          default: 0,
-        },
-        {
-          name: "Sharpen",
-          key: "sharpen",
-          min: 0,
-          max: 100,
-          step: 1,
-          default: 0,
-        },
-        {
-          name: "Hue Rotate",
-          key: "hueRotate",
-          min: 0,
-          max: 360,
-          step: 1,
-          default: 0,
-          suffix: "°",
-        },
-      ].map((effect) => (
-        <AdjustmentSlider
-          key={effect.key}
-          label={effect.name}
-          value={imageSettings[effect.key]}
-          defaultValue={effect.default}
-          min={effect.min}
-          max={effect.max}
-          step={effect.step}
-          onChange={(value) => onSliderChange(effect.key, value)}
-          suffix={effect.suffix || ""}
-        />
-      ))}
-    </div>
-  </div>
-);
-
 const EditMedia = ({ onImageSettingsChange, mediaUrl }) => {
   const [activeTab, setActiveTab] = useState("filters");
   const [selectedFilter, setSelectedFilter] = useState("Original");
@@ -328,13 +258,43 @@ const EditMedia = ({ onImageSettingsChange, mediaUrl }) => {
       style: { hueRotate: 30, saturation: 110, temperature: 30 },
     },
     {
-      name: "Cool",
-      style: { hueRotate: 180, saturation: 110, temperature: -30 },
+      name: "Alien",
+      style: { hueRotate: 200, saturation: 110, temperature: -30 },
     },
     { name: "Sepia", style: { sepia: 80 } },
     {
       name: "Dramatic",
       style: { contrast: 140, brightness: 90, vignette: 50 },
+    },
+    {
+      name: "Cinematic",
+      style: { contrast: 130, brightness: 90, vignette: 60 },
+    },
+    {
+      name: "Neon",
+      style: { contrast: 150, saturation: 160, brightness: 110 },
+    },
+    { name: "Black & White", style: { grayscale: 100, contrast: 120 } },
+    {
+      name: "Golden Hour",
+      style: { warmth: 50, brightness: 110, saturation: 120 },
+    },
+    { name: "Muted", style: { contrast: 80, saturation: 70 } },
+    { name: "Glossy", style: { brightness: 120, contrast: 110, sharpen: 20 } },
+    { name: "Vintage", style: { sepia: 50, contrast: 90, warmth: 40 } },
+    { name: "Film Grain", style: { contrast: 110, grain: 40, saturation: 90 } },
+    {
+      name: "Frosty",
+      style: { hueRotate: 210, brightness: 95, contrast: 105 },
+    },
+    { name: "Desert", style: { hueRotate: 40, warmth: 60, contrast: 110 } },
+    {
+      name: "Mystic",
+      style: { hueRotate: 270, brightness: 95, contrast: 120 },
+    },
+    {
+      name: "Charcoal",
+      style: { grayscale: 100, contrast: 110, brightness: 90 },
     },
   ];
 
@@ -405,7 +365,6 @@ const EditMedia = ({ onImageSettingsChange, mediaUrl }) => {
     }
   }, [imageSettings, selectedFilter, onImageSettingsChange]);
 
-  // Render the active tab content
   const renderTabContent = () => {
     switch (activeTab) {
       case "filters":

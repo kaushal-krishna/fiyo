@@ -7,6 +7,13 @@ const NavStack = () => {
     window.matchMedia("(max-width: 768px)").matches
   );
 
+  const noBottomNavRoutes = [
+    "/create",
+    "/direct/inbox",
+    "/direct/t/:id",
+    "/notifications",
+  ];
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.matchMedia("(max-width: 768px)").matches);
@@ -16,7 +23,15 @@ const NavStack = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return <>{isMobile ? <BottomNav /> : <SideNav />}</>;
+  return (
+    <>
+      {isMobile ? (
+        !noBottomNavRoutes.includes(window.location.pathname) && <BottomNav />
+      ) : (
+        <SideNav />
+      )}
+    </>
+  );
 };
 
 export default NavStack;

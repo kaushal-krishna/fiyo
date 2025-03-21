@@ -1,35 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Users, X, Hash, PlusCircle, Info } from "lucide-react";
+import { Users, X, Hash, PlusCircle, Music } from "lucide-react";
 
-const AddDetails = ({ caption, setCaption, description, setDescription }) => {
+const AddDetails = ({ caption, setCaption }) => {
   const [hashtag, setHashtag] = useState("");
   const [hashtags, setHashtags] = useState([]);
   const [collaborator, setCollaborator] = useState("");
   const [collaborators, setCollaborators] = useState([]);
   const [captionCharCount, setCaptionCharCount] = useState(0);
-  const [descriptionCharCount, setDescriptionCharCount] = useState(0);
   const maxCaptionChars = 280;
-  const maxDescriptionChars = 500;
 
   useEffect(() => {
     setCaptionCharCount(caption?.length || 0);
   }, [caption]);
 
-  useEffect(() => {
-    setDescriptionCharCount(description?.length || 0);
-  }, [description]);
-
   const handleCaptionChange = (e) => {
     const text = e.target.value;
     if (text.length <= maxCaptionChars) {
       setCaption(text);
-    }
-  };
-
-  const handleDescriptionChange = (e) => {
-    const text = e.target.value;
-    if (text.length <= maxDescriptionChars) {
-      setDescription(text);
     }
   };
 
@@ -62,8 +49,6 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
     }
   };
 
-  const isFormValid = caption.trim().length > 0;
-
   return (
     <div className="flex flex-col gap-6 max-w-md mx-auto">
       <h2 className="text-xl font-semibold text-primary-text dark:text-primary-text-dark">
@@ -93,38 +78,6 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
             placeholder="Write a caption..."
             value={caption || ""}
             onChange={handleCaptionChange}
-          />
-        </div>
-
-        {/* Description Field */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-100 dark:border-gray-700">
-          <div className="flex justify-between mb-2">
-            <div className="flex items-center gap-1">
-              <label className="text-sm font-medium text-primary-text dark:text-primary-text-dark">
-                Description
-              </label>
-              <Info
-                size={14}
-                className="text-gray-400 cursor-help"
-                title="Add more details about your post"
-              />
-            </div>
-            <span
-              className={`text-xs ${
-                descriptionCharCount > maxDescriptionChars * 0.8
-                  ? "text-amber-500"
-                  : "text-gray-500"
-              }`}
-            >
-              {descriptionCharCount}/{maxDescriptionChars}
-            </span>
-          </div>
-          <textarea
-            className="w-full p-3 border rounded-lg bg-secondary-bg dark:bg-secondary-bg-dark border-tertiary-bg dark:border-tertiary-bg-dark text-primary-text dark:text-primary-text-dark focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            rows="4"
-            placeholder="Add more details about your post (optional)"
-            value={description || ""}
-            onChange={handleDescriptionChange}
           />
         </div>
 
@@ -224,19 +177,6 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
               ))}
             </div>
           )}
-        </div>
-
-        <div className="pt-4">
-          <button
-            className={`w-full py-3.5 rounded-lg shadow-sm hover:shadow-md active:scale-99 transform duration-100 ${
-              isFormValid
-                ? "bg-blue-500 text-white hover:bg-blue-600"
-                : "bg-gray-800 text-gray-600 cursor-not-allowed"
-            }`}
-            disabled={!isFormValid}
-          >
-            Share
-          </button>
         </div>
       </div>
     </div>

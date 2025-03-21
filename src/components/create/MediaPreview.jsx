@@ -42,7 +42,7 @@ const MediaPreview = ({ type, mediaUrl, imageSettings = {} }) => {
 
   if (!mediaUrl) {
     return (
-      <div className="w-full h-full bg-secondary-bg dark:bg-secondary-bg-dark rounded-lg flex items-center justify-center">
+      <div className="w-full h-full bg-secondary-bg dark:bg-secondary-bg-dark md:rounded-xl flex items-center justify-center">
         <p className="text-primary-text dark:text-primary-text-dark opacity-60">
           Select media to preview
         </p>

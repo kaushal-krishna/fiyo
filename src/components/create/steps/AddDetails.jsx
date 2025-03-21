@@ -79,7 +79,9 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
             </label>
             <span
               className={`text-xs ${
-                captionCharCount > maxCaptionChars * 0.8 ? "text-amber-500" : "text-gray-500"
+                captionCharCount > maxCaptionChars * 0.8
+                  ? "text-amber-500"
+                  : "text-gray-500"
               }`}
             >
               {captionCharCount}/{maxCaptionChars}
@@ -89,7 +91,7 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
             className="w-full p-3 border rounded-lg bg-secondary-bg dark:bg-secondary-bg-dark border-tertiary-bg dark:border-tertiary-bg-dark text-primary-text dark:text-primary-text-dark focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             rows="3"
             placeholder="Write a caption..."
-            value={caption || ''}
+            value={caption || ""}
             onChange={handleCaptionChange}
           />
         </div>
@@ -101,11 +103,17 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
               <label className="text-sm font-medium text-primary-text dark:text-primary-text-dark">
                 Description
               </label>
-              <Info size={14} className="text-gray-400 cursor-help" title="Add more details about your post" />
+              <Info
+                size={14}
+                className="text-gray-400 cursor-help"
+                title="Add more details about your post"
+              />
             </div>
             <span
               className={`text-xs ${
-                descriptionCharCount > maxDescriptionChars * 0.8 ? "text-amber-500" : "text-gray-500"
+                descriptionCharCount > maxDescriptionChars * 0.8
+                  ? "text-amber-500"
+                  : "text-gray-500"
               }`}
             >
               {descriptionCharCount}/{maxDescriptionChars}
@@ -115,7 +123,7 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
             className="w-full p-3 border rounded-lg bg-secondary-bg dark:bg-secondary-bg-dark border-tertiary-bg dark:border-tertiary-bg-dark text-primary-text dark:text-primary-text-dark focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             rows="4"
             placeholder="Add more details about your post (optional)"
-            value={description || ''}
+            value={description || ""}
             onChange={handleDescriptionChange}
           />
         </div>
@@ -126,7 +134,10 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
           </label>
           <div className="flex items-center gap-2">
             <div className="flex-1 relative">
-              <Hash size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Hash
+                size={18}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              />
               <input
                 type="text"
                 className="w-full pl-10 pr-3 py-3 border rounded-lg bg-secondary-bg dark:bg-secondary-bg-dark border-tertiary-bg dark:border-tertiary-bg-dark text-primary-text dark:text-primary-text-dark focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
@@ -172,7 +183,10 @@ const AddDetails = ({ caption, setCaption, description, setDescription }) => {
           </label>
           <div className="flex items-center gap-2">
             <div className="flex-1 relative">
-              <Users size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Users
+                size={18}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              />
               <input
                 type="text"
                 className="w-full pl-10 pr-3 py-3 border rounded-lg bg-secondary-bg dark:bg-secondary-bg-dark border-tertiary-bg dark:border-tertiary-bg-dark text-primary-text dark:text-primary-text-dark focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"

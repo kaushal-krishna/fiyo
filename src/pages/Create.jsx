@@ -33,12 +33,16 @@ const Create = () => {
     sepia: 0,
     hueRotate: 0,
     rotation: 0,
-    filterName: 'Original'
+    filterName: "Original",
   });
 
   const handleMediaSelect = (url, type) => {
     if (!isValidMediaType(selectedType, type)) {
-      alert(`${selectedType}s only support ${selectedType === "Post" ? "images" : "videos"}`);
+      alert(
+        `${selectedType}s only support ${
+          selectedType === "Post" ? "images" : "videos"
+        }`
+      );
       return;
     }
     setMediaUrl(url);
@@ -53,21 +57,28 @@ const Create = () => {
       case 1:
         return <SelectMedia onMediaSelect={handleMediaSelect} />;
       case 2:
-        return selectedType === "Clip" ? 
-          <AddDetails 
-            caption={caption} 
-            setCaption={setCaption} 
-            description={description} 
-            setDescription={setDescription} 
-          /> : 
-          <EditMedia mediaUrl={mediaUrl} onImageSettingsChange={setImageSettings} />;
+        return selectedType === "Clip" ? (
+          <AddDetails
+            caption={caption}
+            setCaption={setCaption}
+            description={description}
+            setDescription={setDescription}
+          />
+        ) : (
+          <EditMedia
+            mediaUrl={mediaUrl}
+            onImageSettingsChange={setImageSettings}
+          />
+        );
       case 3:
-        return <AddDetails 
-          caption={caption} 
-          setCaption={setCaption} 
-          description={description} 
-          setDescription={setDescription} 
-        />;
+        return (
+          <AddDetails
+            caption={caption}
+            setCaption={setCaption}
+            description={description}
+            setDescription={setDescription}
+          />
+        );
       default:
         return null;
     }
@@ -86,9 +97,9 @@ const Create = () => {
               />
             </div>
             <div className="flex-1 h-[calc(100vh-12rem)] md:h-[calc(100vh-8rem)] overflow-hidden rounded-xl bg-primary-bg dark:bg-primary-bg-dark shadow-lg">
-              <MediaPreview 
-                type={mediaType} 
-                mediaUrl={mediaUrl} 
+              <MediaPreview
+                type={mediaType}
+                mediaUrl={mediaUrl}
                 imageSettings={imageSettings}
               />
             </div>

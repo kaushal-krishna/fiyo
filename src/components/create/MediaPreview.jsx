@@ -36,7 +36,7 @@ const MediaPreview = ({ type, mediaUrl, imageSettings = {} }) => {
         sepia(${settings.sepia}%)
         hue-rotate(${settings.hueRotate}deg)
       `,
-      transform: `rotate(${settings.rotation}deg)`
+      transform: `rotate(${settings.rotation}deg)`,
     };
   };
 
